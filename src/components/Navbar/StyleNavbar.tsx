@@ -18,6 +18,7 @@ const StyleNavbar = styled.nav`
     text-decoration: none;
     font-family: 'Work Sans', sans-serif;
     font-weight: 600;
+    font-size: 1.8rem;
   }
   .navbarlist__link--current{
     padding-bottom: 0.5rem;

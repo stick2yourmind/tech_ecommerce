@@ -8,7 +8,7 @@ const Navbar = () => {
         <li className='navbarlist__item'>
           <NavLink to="/category/hardware"
             className={ navData => navData.isActive ? 'navbarlist__link--current' : 'navbarlist__link' }>
-              Hardware PC
+              Hardware
           </NavLink>
         </li>
         <li className='navbarlist__item'>

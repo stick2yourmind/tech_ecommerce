@@ -51,7 +51,8 @@ const StyleHeader = styled.header`
     align-items: end;
   }
   #navbar-sign-checkout__signtext{
-    color: var(--cl-text)
+    color: var(--cl-text);
+    font-size: 1.4rem;
   }
   #navbar-sign-checkout__btn{
     height: 100%;
