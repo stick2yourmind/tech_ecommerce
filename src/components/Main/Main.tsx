@@ -1,6 +1,8 @@
+import getFileUrl from '../../utils/publicFile.utils'
 const Main = () => {
   return (
-    <div>Main</div>
+    // <div>Main</div>
+    <img src={getFileUrl('/img/main-carousel/notebook.webp')} alt="notebook" />
   )
 }
 
