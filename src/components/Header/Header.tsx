@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import StyleHeader from './StyleHeader'
-import Navbar from '../Navbar'
+import Navbar from '../Navbar/Navbar'
 import getFileUrl from '../../utils/publicFile.utils'
 
 const Header = () => {
