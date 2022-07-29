@@ -4,10 +4,18 @@ import useAxiosFunction from '../../hooks/useAXiosFn'
 import { SuccessfulAPIResponse, RESDataGetAllProducts } from '../../hooks/types.hooks'
 import Card from '../../components/Card/Card'
 import { motion } from 'framer-motion'
+import backwardStep from '../Slider/backward-step.svg'
+import SliderStyle from '../Slider/SliderStyle'
 interface CardContainerProps {
   endpoint: string
+  back: boolean;
+  next: boolean;
+  backHandler: (arg: void) => void;
+  nextHandler: (arg: void) => void;
+  title?: string;
 }
-const CardContainer:React.FC<CardContainerProps> = ({ endpoint }) => {
+const CardContainer:React.FC<CardContainerProps> =
+({ endpoint, back, next, backHandler, nextHandler, title }) => {
   const constraintsRef = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState<number>(0)
   const [transX, setTransX] = useState<number>(0)
@@ -32,8 +40,15 @@ const CardContainer:React.FC<CardContainerProps> = ({ endpoint }) => {
     console.log(constraintsRef)
     setWidth(() => calculateConstraint())
   }, [res])
-
+  console.log(transX)
+  console.log(width)
   return (
+    <SliderStyle>
+    <h3 id='slider-title'>{title}</h3>
+    {back &&
+      <img className='slider-step' id='slider-step-backward' src={backwardStep}
+        alt="backward" onClick={() => backHandler()}
+      />}
     <motion.div ref={constraintsRef} style={{ overflow: 'hidden' }}>
       <motion.div
         drag="x"
@@ -55,6 +70,11 @@ const CardContainer:React.FC<CardContainerProps> = ({ endpoint }) => {
           )}
       </motion.div>
     </motion.div>
+    {next &&
+          <img className='slider-step' id='slider-step-forward' src={backwardStep}
+            alt="forward" onClick={() => nextHandler()}
+          />}
+      </SliderStyle>
   )
 }
 

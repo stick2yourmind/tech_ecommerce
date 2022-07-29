@@ -25,24 +25,21 @@ const Home = () => {
       <img src={getFileUrl('/img/main-carousel/notebook.webp')}
         alt="notebook" className='home-head-img'/>
       <div className='home-slider-container'>
-        <Slider title="Placas de video" back next
-          backHandler={() => console.log('atras')} nextHandler={() => console.log('adelante')}>
-            <CardContainer endpoint={import.meta.env.VITE_GET_CAT_GPU_ENDPOINT}/>
-        </Slider>
+        <Slider endpoint={import.meta.env.VITE_GET_CAT_GPU_ENDPOINT}
+          title="Placas de video" back next
+          backHandler={() => console.log('atras')} nextHandler={() => console.log('adelante')}/>
       </div>
 
       <div className='home-slider-container'>
-        <Slider title="Impresoras" back next
-          backHandler={() => console.log('atras')} nextHandler={() => console.log('adelante')}>
-            <CardContainer endpoint={import.meta.env.VITE_GET_CAT_PRINTER_ENDPOINT}/>
-        </Slider>
+        <Slider endpoint={import.meta.env.VITE_GET_CAT_PRINTER_ENDPOINT}
+          title="Placas de video" back next
+          backHandler={() => console.log('atras')} nextHandler={() => console.log('adelante')}/>
       </div>
 
       <div className='home-slider-container'>
-        <Slider title="Notebook" back next
-          backHandler={() => console.log('atras')} nextHandler={() => console.log('adelante')}>
-            <CardContainer endpoint={import.meta.env.VITE_GET_CAT_NOTEBOOK_ENDPOINT}/>
-        </Slider>
+        <Slider endpoint={import.meta.env.VITE_GET_CAT_NOTEBOOK_ENDPOINT}
+          title="Placas de video" back next
+          backHandler={() => console.log('atras')} nextHandler={() => console.log('adelante')}/>
       </div>
     </StyleHome>
   )
