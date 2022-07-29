@@ -1,6 +1,7 @@
 import styled from 'styled-components'
+import { motion } from 'framer-motion'
 
-const CardStyle = styled.div`
+const CardStyle = styled(motion.div)`
   min-width: 25rem;
   justify-content: center;
   background-color: #fff;
@@ -8,7 +9,7 @@ const CardStyle = styled.div`
   grid-template-areas: "card__img"
                        "card__title"
                        "card_price"
-                       "card__btn";
+                       "card__link";
   grid-template-columns: 20rem;
   grid-template-rows: 20rem 6rem 4rem 5rem;
   gap: 0;
@@ -25,6 +26,8 @@ const CardStyle = styled.div`
     width: 100%;
     max-height: 100%;
     object-fit: contain;
+    user-select: none;
+    pointer-events: none;
   }
   .card__title{
     grid-area: card__title;
@@ -43,8 +46,8 @@ const CardStyle = styled.div`
     font-size: 2.8rem;
     font-family: 'Work Sans',sans-serif;
   }
-  .card__btn{
-    grid-area: card__btn;
+  .card__link{
+    grid-area: card__link;
     font-size: 2.8rem;
     font-family: 'Work Sans',sans-serif;
     background-color: var(--bg-dark);
@@ -55,6 +58,9 @@ const CardStyle = styled.div`
     border-top-right-radius: 0.4rem;
     border-bottom-left-radius: 0.4rem;
     border-bottom-right-radius: 0.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `
 export default CardStyle

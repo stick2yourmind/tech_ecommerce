@@ -66,7 +66,8 @@ const CardContainer:React.FC<CardContainerProps> =
           }
           {(res as SuccessfulAPIResponse <RESDataGetAllProducts>)?.data?.products &&
           (res as SuccessfulAPIResponse <RESDataGetAllProducts>).data.products.map(product =>
-            <Card img={product.photo} name={product.name} price={product.price} key={product._id} />
+            <Card img={product.photo} name={product.name} price={product.price} key={product._id}
+              id={product._id}/>
           )}
       </motion.div>
     </motion.div>
