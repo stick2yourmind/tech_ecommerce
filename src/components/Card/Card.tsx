@@ -1,11 +1,18 @@
+import React from 'react'
 import CardStyle from './CardStyle'
 
-const Card = ({ description }) => {
+export interface CardProps{
+  img: string
+  name: string
+  price: number
+}
+
+const Card:React.FC<CardProps> = ({ img, name, price }) => {
   return (
     <CardStyle>
-      <img className='card__img' src="https://www.tiendanova.com.ar/SITES/IMG/clan-co-10-2020/19-11-2020-12-11-09-9.jpg" alt="3080" />
-      <h5 className='card__title'>RTX 3080 10 GB GAMING OC GDDR6X Gigabyte</h5>
-      <h5 className='card_price'>$200.000</h5>
+      <img className='card__img' src={img} alt={name} />
+      <h5 className='card__title'>{name}</h5>
+      <h5 className='card_price'>${price}</h5>
       <button className='card__btn'>Ver producto</button>
     </CardStyle>
   )

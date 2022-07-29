@@ -1,6 +1,7 @@
 import styled from 'styled-components'
+import { motion } from 'framer-motion'
 
-const StyleHeader = styled.header`
+const StyleHeader = styled(motion.header)`
   min-width: 100%;
   display: flex;
   justify-content: space-around;

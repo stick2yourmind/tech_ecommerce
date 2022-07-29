@@ -12,15 +12,15 @@ const StyleHome = styled.div`
     margin-bottom: 2rem;
   }
  .card-container{
-    width: 100%;
+    width: 77rem;
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     column-gap: 1rem;
  }
- .card-container > :nth-child(n+4){
+ /* .card-container > :nth-child(n+4){
     display: none;
- }
+ } */
 `
 
 export default StyleHome

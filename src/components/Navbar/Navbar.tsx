@@ -1,33 +1,21 @@
 import StyleNavbar from './StyleNavbar'
-import { NavLink } from 'react-router-dom'
+import Navlink from './Navlink'
 
 const Navbar = () => {
   return (
     <StyleNavbar>
       <ul className='navbarlist'>
         <li className='navbarlist__item'>
-          <NavLink to="/category/hardware"
-            className={ navData => navData.isActive ? 'navbarlist__link--current' : 'navbarlist__link' }>
-              Hardware
-          </NavLink>
+          <Navlink to="/category/hardware" title='Hardware'/>
         </li>
         <li className='navbarlist__item'>
-          <NavLink to="category/notebook"
-            className={ navData => navData.isActive ? 'navbarlist__link--current' : 'navbarlist__link' }>
-              Notebook
-          </NavLink>
+          <Navlink to="/category/notebook" title='Notebook'/>
         </li>
         <li className='navbarlist__item'>
-          <NavLink to="category/accessory"
-            className={ navData => navData.isActive ? 'navbarlist__link--current' : 'navbarlist__link' }>
-              Accesorios
-          </NavLink>
+          <Navlink to="/category/power-supply" title='Fuentes'/>
         </li>
         <li className='navbarlist__item'>
-          <NavLink to="category/printer"
-            className={ navData => navData.isActive ? 'navbarlist__link--current' : 'navbarlist__link' }>
-              Impresoras
-          </NavLink>
+          <Navlink to="/category/printer" title='Impresoras'/>
         </li>
       </ul>
     </StyleNavbar>

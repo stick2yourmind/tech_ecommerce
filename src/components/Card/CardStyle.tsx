@@ -23,6 +23,8 @@ const CardStyle = styled.div`
   .card__img{
     grid-area: card__img;
     width: 100%;
+    max-height: 100%;
+    object-fit: contain;
   }
   .card__title{
     grid-area: card__title;
@@ -30,6 +32,11 @@ const CardStyle = styled.div`
     font-size: 1.6rem;
     font-family: 'Work Sans',sans-serif;
     text-align: center;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    line-clamp: 2; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .card_price{
     grid-area: card_price;

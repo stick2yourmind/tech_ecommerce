@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-
 const SliderStyle = styled.div`
   display: grid;
   grid-template-columns: 4rem 80rem 4rem;
