@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import useAxiosFunction from '../../hooks/useAXiosFn'
 import axiosInstance from '../../app/api/axios'
-import { SuccessfulAPIResponse, RESDataGetAllProducts } from '../../hooks/types.hooks'
+import { RESDataGetAllProducts } from '../../hooks/types.hooks'
 import Card from '../../components/Card/Card'
 import CategoryStyle from './CategoryStyle'
 import { Variants } from 'framer-motion'
