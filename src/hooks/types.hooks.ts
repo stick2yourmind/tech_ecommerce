@@ -48,17 +48,25 @@ export interface SuccessfulAPIResponse<T>{
   statusCode: number
   data: T
 }
+export type RESDataGetProductById = Product
+
 export interface FailedAPIResponse{
   error: false
   statusCode: number
   error_details: ErrorDetailsAPIResponse
+}
+export interface RESPONSEAPI<T>{
+  error: false
+  statusCode: number
+  error_details?:ErrorDetailsAPIResponse
+  data?: T
 }
 export type ReturnErrUseAxiosFn = string | false
 export type ReturnLoadUseAxiosFn = boolean
 export type CtrlUseAxiosFn = AbortController
 export type ReturnUseAxiosFn = (configObj: AxiosFetchParams) => Promise<void>
 export type ReturnUseAxiosFunction = [
-  FailedAPIResponse | SuccessfulAPIResponse <RESDataGetAllProducts>,
+  FailedAPIResponse | SuccessfulAPIResponse <RESDataGetAllProducts> | SuccessfulAPIResponse<Product>,
   ReturnErrUseAxiosFn,
   ReturnLoadUseAxiosFn,
   ReturnUseAxiosFn

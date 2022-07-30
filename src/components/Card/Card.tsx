@@ -8,7 +8,7 @@ export interface CardProps{
   name: string
   price: number
   id: string,
-  index: number
+  index?: number
 }
 
 const Card:React.FC<CardProps> = ({ img, name, price, id, index }) => {
@@ -17,7 +17,7 @@ const Card:React.FC<CardProps> = ({ img, name, price, id, index }) => {
     show: {
       opacity: 1,
       transition: {
-        delay: index * 0.2,
+        delay: index ? index * 0.2 : 0,
         duration: 0.3
       },
       x: 0

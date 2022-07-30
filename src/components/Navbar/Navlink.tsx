@@ -8,8 +8,6 @@ interface NavlinkProps {
 
 const Navlink:React.FC<NavlinkProps> = ({ to, title }) => {
   const location = useLocation()
-  console.log('location: ', to)
-  console.log(location.pathname === to)
   return (
     <>
     <Link to={to} className='navbarlist__link'>{title}</Link>

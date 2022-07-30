@@ -1,7 +1,7 @@
 import { Route, Routes, Navigate } from 'react-router-dom'
 import Home from '../../pages/Home/Home'
 import Category from '../../pages/Category/Category'
-
+import Product from '../../pages/Product/Product'
 const Main = () => {
   return (
     <Routes>
@@ -25,6 +25,9 @@ const Main = () => {
         element={<Category
           categoryEndpoint={import.meta.env.VITE_GET_CAT_PRINTER_ENDPOINT}
           title="Impresoras"/>}
+      />
+      <Route path="/product/:productId"
+        element={<Product/>}
       />
       <Route path='*' element={ <Navigate to='/'/> } />
     </Routes>

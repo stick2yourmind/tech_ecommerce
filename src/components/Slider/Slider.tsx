@@ -1,22 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react'
 import axiosInstance from '../../app/api/axios'
 import useAxiosFunction from '../../hooks/useAXiosFn'
-import { SuccessfulAPIResponse, RESDataGetAllProducts } from '../../hooks/types.hooks'
+import { RESDataGetAllProducts } from '../../hooks/types.hooks'
 import Card from '../../components/Card/Card'
 import { motion } from 'framer-motion'
 import backwardStep from './backward-step.svg'
 import SliderStyle from './SliderStyle'
 
-interface CardContainerProps {
+interface SliderProps {
   endpoint: string
   title?: string;
 }
-const CardContainer:React.FC<CardContainerProps> =
+const Slider:React.FC<SliderProps> =
 ({ endpoint, title }) => {
   const constraintsRef = useRef<HTMLDivElement>(null)
   const [width, setWidth] = useState<number>(0)
   const [transX, setTransX] = useState<number>(0)
-  const [res, err, loading, axiosFn] = useAxiosFunction()
+  const [res, err, loading, axiosFn] = useAxiosFunction<RESDataGetAllProducts>()
   useEffect(() => {
     const getData = () => {
       axiosFn({
@@ -37,7 +37,6 @@ const CardContainer:React.FC<CardContainerProps> =
     // console.log(constraintsRef)
     setWidth(() => calculateConstraint())
   }, [res])
-  console.log(res)
   return (
     <SliderStyle>
     <h3 id='slider-title'>{title}</h3>
@@ -60,12 +59,12 @@ const CardContainer:React.FC<CardContainerProps> =
           {!loading && err &&
               <p className='errMsg'>{`Un error ha ocurrido, reintente nuevamente: ${err}`}</p>
           }
-          {(res as SuccessfulAPIResponse <RESDataGetAllProducts>)?.data?.products &&
-          (res as SuccessfulAPIResponse <RESDataGetAllProducts>).data.products.map(product =>
-            <Card img={product.photo} name={product.name} price={product.price} key={product._id}
-              id={product._id}
-            />
-          )}
+          {res?.data?.products &&
+            res.data.products.map(product =>
+              <Card img={product.photo} name={product.name} price={product.price} key={product._id}
+                id={product._id}
+              />
+            )}
       </motion.div>
     </motion.div>
     <img className='slider-step' id='slider-step-forward' src={backwardStep}
@@ -80,4 +79,4 @@ const CardContainer:React.FC<CardContainerProps> =
   )
 }
 
-export default CardContainer
+export default Slider

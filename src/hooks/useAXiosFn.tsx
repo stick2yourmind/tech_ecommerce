@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
 import {
-  ReturnUseAxiosFunction, FailedAPIResponse, SuccessfulAPIResponse,
-  RESDataGetAllProducts, ReturnErrUseAxiosFn, ReturnLoadUseAxiosFn, CtrlUseAxiosFn,
+  ReturnUseAxiosFn, RESPONSEAPI, ReturnErrUseAxiosFn, ReturnLoadUseAxiosFn, CtrlUseAxiosFn,
   AxiosFetchParams
 } from './types.hooks'
 
-type Response = FailedAPIResponse | SuccessfulAPIResponse <RESDataGetAllProducts>
-const useAxiosFunction = ():ReturnUseAxiosFunction => {
+function useAxiosFunction <T=undefined> ():[RESPONSEAPI<T>, ReturnErrUseAxiosFn,
+  ReturnLoadUseAxiosFn, ReturnUseAxiosFn] {
   const [response, setResponse] =
-    useState <Response>({} as FailedAPIResponse)
+    useState <RESPONSEAPI<T>>({} as RESPONSEAPI<T>)
   const [error, setError] = useState<ReturnErrUseAxiosFn>(false)
   const [loading, setLoading] = useState<ReturnLoadUseAxiosFn>(false)
   const [controller, setController] = useState<CtrlUseAxiosFn>()
@@ -27,9 +26,11 @@ const useAxiosFunction = ():ReturnUseAxiosFunction => {
       setController(ctrl)
       const res = await axiosInstance[method](url, {
         ...requestConfig,
-        signal: ctrl.signal
+        signal: ctrl.signal,
+        timeout: 5000
       })
       setResponse(res.data)
+      setError(false)
     } catch (err) {
       setError((err as Error).message)
     } finally {

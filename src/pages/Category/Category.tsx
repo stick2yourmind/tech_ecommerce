@@ -15,7 +15,7 @@ const Category:React.FC<CategoryProps> = ({ categoryEndpoint, title }) => {
     hidden: { opacity: 0 },
     show: { opacity: 1 }
   }
-  const [res, err, loading, axiosFn] = useAxiosFunction()
+  const [res, err, loading, axiosFn] = useAxiosFunction<RESDataGetAllProducts>()
   useEffect(() => {
     const getData = () => {
       axiosFn({
@@ -26,17 +26,16 @@ const Category:React.FC<CategoryProps> = ({ categoryEndpoint, title }) => {
     }
     getData()
   }, [categoryEndpoint])
-  console.log(res)
   return (
     <CategoryStyle variants={container} initial="hidden" animate="show" >
       <h1 className='category__title'>{title}</h1>
             {loading && <p>Loading</p>}
-      <div className='category__items'>
-            {!loading && err &&
+            {!loading && err && err.toLowerCase() !== 'canceled' &&
                 <p className='errMsg'>{`Un error ha ocurrido, reintente nuevamente: ${err}`}</p>
             }
-            {(res as SuccessfulAPIResponse <RESDataGetAllProducts>)?.data?.products &&
-              (res as SuccessfulAPIResponse <RESDataGetAllProducts>).data.products.map((product, i) =>
+      <div className='category__items'>
+            {res.data?.products &&
+              res.data.products.map((product, i) =>
                 <Card img={product.photo} name={product.name} price={product.price} key={product._id}
                   id={product._id} index={i}/>)
             }
