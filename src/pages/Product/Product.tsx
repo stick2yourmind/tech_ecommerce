@@ -27,13 +27,15 @@ const ProductDetail = () => {
           <p className='errMsg'>{`Un error ha ocurrido, reintente nuevamente: ${err}`}</p>
       }
       <div className="product-detail">
-        <div className="product-detail-info">
+        <div className="product-detail__info">
           <img src={res.data?.photo} alt={res?.data?.name} className="product-detail__img"/>
-            <pre className="product-detail__description">
+          <pre className="product-detail__description">
             {res.data?.description.replace(/(?:\\n)/g, String.fromCharCode(10))}
-            </pre>
+          </pre>
         </div>
-        <div className="product-detail-buy"></div>
+        <div className="product-detail__buy">
+          <h5 className='product-detail__title'>{res.data?.name}</h5>
+        </div>
       </div>
     </ProductStyle>
   )

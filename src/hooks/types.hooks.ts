@@ -23,13 +23,13 @@ export type QueryLoginUser = Pick<QueryRegisterUser, 'email' | 'password'>
 export interface AxiosFetchParams{
   axiosInstance:AxiosInstance,
   method: 'get' | 'post' | 'put' | 'delete',
-  url: string,
-  requestConfig?:QueryCreateUpdateProduct
+  requestConfig?:QueryCreateUpdateProduct,
+  url: string
 }
 
 export interface ErrorDetailsAPIResponse{
+  details?: string,
   message: string
-  details?: string
 }
 export interface Product{
   _id: string
@@ -44,22 +44,22 @@ export interface RESDataGetAllProducts{
   products: Product[]
 }
 export interface SuccessfulAPIResponse<T>{
-  error: false
+  data: T,
+  error: false,
   statusCode: number
-  data: T
 }
 export type RESDataGetProductById = Product
 
 export interface FailedAPIResponse{
   error: false
+  error_details: ErrorDetailsAPIResponse,
   statusCode: number
-  error_details: ErrorDetailsAPIResponse
 }
 export interface RESPONSEAPI<T>{
-  error: false
-  statusCode: number
+  data?: T,
+  error: false,
   error_details?:ErrorDetailsAPIResponse
-  data?: T
+  statusCode: number
 }
 export type ReturnErrUseAxiosFn = string | false
 export type ReturnLoadUseAxiosFn = boolean
