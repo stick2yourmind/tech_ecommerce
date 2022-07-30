@@ -1,17 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { Product } from '../../hooks/types.hooks'
 
-export interface UpdateCreateProduct{
-  name: string,
-  photo: string,
-  price: number,
-  productId: string,
+export type CartProduct = Omit<Product, 'category' | 'description' | 'stock'> & {
   quantity: number
 }
-export interface DeleteProduct{
-  productId: string
-}
+export type Cart = Map<string, CartProduct>
 export interface CartState{
-  cart: Map<string, UpdateCreateProduct>
+  cart: Cart
 }
 export interface Action<T>{
   payload: T,
@@ -24,8 +19,8 @@ export const cartReducer = createSlice({
   initialState,
   name: 'cart',
   reducers: {
-    deleteProduct: (state, action:Action<DeleteProduct>) => {
-      state.cart.delete(action.payload.productId)
+    deleteProduct: (state, action:Action<CartProduct>) => {
+      state.cart.delete(action.payload._id)
     },
     loadCart: (state) => {
       const cartData = localStorage.getItem('cart')
@@ -33,22 +28,16 @@ export const cartReducer = createSlice({
         state.cart = new Map(JSON.parse(cartData))
     },
 
-    updateCreateProduct: (state, action:Action<UpdateCreateProduct>) => {
+    updateCreateProduct: (state, action:Action<CartProduct>) => {
       if (action.payload.quantity === 0)
-        state.cart.delete(action.payload.productId)
+        state.cart.delete(action.payload._id)
       else {
-        state.cart.set(action.payload.productId, {
-          name: action.payload.name,
-          photo: action.payload.photo,
-          price: action.payload.price,
-          productId: action.payload.productId,
-          quantity: action.payload.quantity
-        })
+        state.cart.set(action.payload._id, action.payload)
         localStorage.setItem('cart', JSON.stringify([...state.cart]))
       }
     }
   }
 })
 
-export const { deleteProduct, updateCreateProduct } = cartReducer.actions
+export const { deleteProduct, updateCreateProduct, loadCart } = cartReducer.actions
 export default cartReducer.reducer

@@ -35,6 +35,7 @@ const ProductDetail = () => {
         </div>
         <div className="product-detail__buy">
           <h5 className='product-detail__title'>{res.data?.name}</h5>
+          <h5 className='product-detail__price'>{res.data?.price}</h5>
         </div>
       </div>
     </ProductStyle>
