@@ -27,7 +27,7 @@ function useAxiosFunction <T=undefined> ():[RESPONSEAPI<T>, ReturnErrUseAxiosFn,
       const res = await axiosInstance[method](url, {
         ...requestConfig,
         signal: ctrl.signal,
-        timeout: 5000
+        timeout: 10000
       })
       setResponse(res.data)
       setError(false)

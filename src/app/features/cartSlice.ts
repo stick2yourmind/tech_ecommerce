@@ -1,43 +1,51 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Product } from '../../hooks/types.hooks'
 
 export type CartProduct = Omit<Product, 'category' | 'description' | 'stock'> & {
   quantity: number
 }
-export type Cart = Map<string, CartProduct>
 export interface CartState{
-  cart: Cart
+  isConfirmed: boolean,
+  length: number,
+  products: CartProduct[]
 }
 export interface Action<T>{
   payload: T,
   type: string
 }
+export type DeleteProduct = Pick<CartProduct, '_id'>
 const initialState: CartState = {
-  cart: new Map()
+  isConfirmed: false,
+  length: 0,
+  products: []
 }
 export const cartReducer = createSlice({
   initialState,
   name: 'cart',
   reducers: {
-    deleteProduct: (state, action:Action<CartProduct>) => {
-      state.cart.delete(action.payload._id)
-    },
-    loadCart: (state) => {
-      const cartData = localStorage.getItem('cart')
-      if (cartData)
-        state.cart = new Map(JSON.parse(cartData))
+    deleteProduct: (state, action:PayloadAction<DeleteProduct>) => {
+      const newProducts = state.products.filter(product => product._id !== action.payload._id)
+      state.products = newProducts
+      state.length = state.products.length
     },
 
-    updateCreateProduct: (state, action:Action<CartProduct>) => {
-      if (action.payload.quantity === 0)
-        state.cart.delete(action.payload._id)
-      else {
-        state.cart.set(action.payload._id, action.payload)
-        localStorage.setItem('cart', JSON.stringify([...state.cart]))
+    setConfirmCheckout: (state) => {
+      state.isConfirmed = true
+    },
+
+    updateCreateProduct: (state, action:PayloadAction<CartProduct>) => {
+      if (action.payload.quantity === 0) {
+        const newProducts = state.products.filter(product => product._id !== action.payload._id)
+        state.products = newProducts
+      } else {
+        const index = state.products.findIndex(product => product._id === action.payload._id)
+        if (index === -1) state.products.push(action.payload)
+        state.products[index] = { ...action.payload }
       }
+      state.length = state.products.length
     }
   }
 })
 
-export const { deleteProduct, updateCreateProduct, loadCart } = cartReducer.actions
+export const { deleteProduct, updateCreateProduct, setConfirmCheckout } = cartReducer.actions
 export default cartReducer.reducer

@@ -42,18 +42,18 @@ const StyleHeader = styled(motion.header)`
     height: 1.7rem;
     border-radius: 50%;
     color: black;
-    text-align: center;
-    line-height: 1.5rem;
     margin-top: 0.3rem;
-    font-weight: 900;
-    font-family: 'Syncopate', sans-serif;
+    font-family: 'Roboto',sans-serif;
+    font-size: 1.1rem;
     display: flex;
     justify-content: center;
-    align-items: end;
+    align-items: center;
   }
   #navbar-sign-checkout__signtext{
     color: var(--cl-text);
     font-size: 1.4rem;
+    font-family: Roboto;
+    font-weight: 300;
   }
   #navbar-sign-checkout__btn{
     height: 100%;

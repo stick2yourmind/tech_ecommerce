@@ -2,6 +2,8 @@ import { Route, Routes, Navigate } from 'react-router-dom'
 import Home from '../../pages/Home/Home'
 import Category from '../../pages/Category/Category'
 import Product from '../../pages/Product/Product'
+import CheckoutConfirmation from '../../pages/Checkout/CheckoutConfirmation'
+
 const Main = () => {
   return (
     <Routes>
@@ -29,6 +31,7 @@ const Main = () => {
       <Route path="/product/:productId"
         element={<Product/>}
       />
+      <Route path="/cart/checkout" element={<CheckoutConfirmation/>} />
       <Route path='*' element={ <Navigate to='/'/> } />
     </Routes>
   )

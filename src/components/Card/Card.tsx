@@ -4,16 +4,16 @@ import { Link } from 'react-router-dom'
 import { Variants } from 'framer-motion'
 
 export interface CardProps{
-  img: string
-  name: string
-  price: number
   id: string,
-  index?: number
+  img: string,
+  index?: number,
+  name: string,
+  price: number
 }
 
 const Card:React.FC<CardProps> = ({ img, name, price, id, index }) => {
   const item:Variants = {
-    hidden: { opacity: 0, x: -50 },
+    hidden: { opacity: 0, y: -50 },
     show: {
       opacity: 1,
       transition: {

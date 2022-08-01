@@ -42,7 +42,14 @@ a {
 a:visited{
   color: var(--cl-text)
 }
-
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type=number] { 
+  -moz-appearance: textfield;
+  appearance: textfield;
+  text-align: center;
+}
 /* @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

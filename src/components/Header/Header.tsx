@@ -2,8 +2,11 @@ import { Link } from 'react-router-dom'
 import StyleHeader from './StyleHeader'
 import Navbar from '../Navbar/Navbar'
 import getFileUrl from '../../utils/publicFile.utils'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../app/store'
 
 const Header = () => {
+  const cartLength = useSelector((state: RootState) => state.cart.length)
   return (
     <StyleHeader>
       <Link id='navbar-logo' to='/'>
@@ -16,10 +19,10 @@ const Header = () => {
           <img className='navbar-sign-checkout__img' src={getFileUrl('/img/account.svg')} alt="img" />
           <p id='navbar-sign-checkout__signtext'>Ingresar</p>
         </Link>
-        <button id='navbar-sign-checkout__btn'>
+        <Link id='navbar-sign-checkout__btn' to="/cart/checkout">
           <img className='navbar-sign-checkout__img' src={getFileUrl('/img/cart.svg')} alt="Logo" />
-          <p id='navbar-sign-checkout__counter'>0</p>
-        </button>
+          <p id='navbar-sign-checkout__counter'>{cartLength}</p>
+        </Link>
       </div>
       <div id='rgb-light'></div>
     </StyleHeader>
