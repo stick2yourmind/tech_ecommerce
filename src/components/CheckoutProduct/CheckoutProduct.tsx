@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { CartProduct, deleteProduct } from '../../app/features/cartSlice'
 import CheckoutProductStyle from './CheckoutProductStyle'
 import deleteImg from './delete.svg'
-import { Variants } from 'framer-motion'
+import { Variants, motion } from 'framer-motion'
 
 export interface CheckoutProps extends CartProduct {
   index?: number
@@ -12,6 +12,7 @@ export interface CheckoutProps extends CartProduct {
 const CheckoutProduct:React.FC<CheckoutProps> = ({ quantity, name, photo, price, _id, index = 0 }) => {
   const dispatch = useDispatch()
   const product:Variants = {
+    exit: { opacity: 0 },
     hidden: { opacity: 0, y: -50 },
     show: {
       opacity: 1,
@@ -23,7 +24,7 @@ const CheckoutProduct:React.FC<CheckoutProps> = ({ quantity, name, photo, price,
     }
   }
   return (
-    <CheckoutProductStyle variants={product}>
+    <CheckoutProductStyle variants={product} exit={{ opacity: 0 }}>
       <img src={photo} alt={name} className='cart-product__product-photo'/>
       <div className='cart-product__info'>
         <p className="cart-product__name">{name}</p>
