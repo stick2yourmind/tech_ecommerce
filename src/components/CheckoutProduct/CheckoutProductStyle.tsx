@@ -29,6 +29,14 @@ const CheckoutProductStyle = styled(motion.div)`
   .cart-product__delete-img{
     width: 2rem;
   }
+  .cart-product__delete-img:hover{
+    filter: invert(47%) sepia(35%) saturate(4299%) hue-rotate(338deg) brightness(99%) contrast(105%);
+    transition: all 0.5s;
+  }
+  .cart-product__delete-img:active{
+    transform: scale(0.95);
+    transition: all 0.3s;
+  }
 `
 
 export default CheckoutProductStyle

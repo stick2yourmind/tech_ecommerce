@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { CartProduct, deleteProduct } from '../../app/features/cartSlice'
 import CheckoutProductStyle from './CheckoutProductStyle'
 import deleteImg from './delete.svg'
-import { Variants, motion } from 'framer-motion'
+import { Variants } from 'framer-motion'
 
 export interface CheckoutProps extends CartProduct {
   index?: number

@@ -20,10 +20,13 @@ export interface QueryRegisterUser{
 }
 export type QueryLoginUser = Pick<QueryRegisterUser, 'email' | 'password'>
 
-export interface AxiosFetchParams{
+export interface RequestConfigAxios<T>{
+  data: T
+}
+export interface AxiosFetchParams<T>{
   axiosInstance:AxiosInstance,
   method: 'get' | 'post' | 'put' | 'delete',
-  requestConfig?:QueryCreateUpdateProduct,
+  requestConfig?:RequestConfigAxios<T>,
   url: string
 }
 
@@ -64,10 +67,10 @@ export interface RESPONSEAPI<T>{
 export type ReturnErrUseAxiosFn = string | false
 export type ReturnLoadUseAxiosFn = boolean
 export type CtrlUseAxiosFn = AbortController
-export type ReturnUseAxiosFn = (configObj: AxiosFetchParams) => Promise<void>
-export type ReturnUseAxiosFunction = [
+export type ReturnUseAxiosFn<T> = (configObj: AxiosFetchParams<T>) => Promise<void>
+export type ReturnUseAxiosFunction<T> = [
   FailedAPIResponse | SuccessfulAPIResponse <RESDataGetAllProducts> | SuccessfulAPIResponse<Product>,
   ReturnErrUseAxiosFn,
   ReturnLoadUseAxiosFn,
-  ReturnUseAxiosFn
+  ReturnUseAxiosFn<T>
 ]

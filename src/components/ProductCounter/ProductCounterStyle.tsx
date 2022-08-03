@@ -33,5 +33,16 @@ const ProductCounterStyle = styled.div`
     justify-content: center;
     align-items: center;
   }
+  .counter__btn:hover{
+    background-color: white;
+    border-color: var(--bg-dark);
+    color:  var(--bg-dark);
+    border: 0.1rem solid var(--bg-dark);
+    transition: all 0.4s;
+  }
+  .counter__btn:active{
+    transform: scale(0.9);
+    transition: all 0.2s;
+  }
 `
 export default ProductCounterStyle

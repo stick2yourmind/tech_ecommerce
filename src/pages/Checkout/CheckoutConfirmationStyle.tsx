@@ -33,6 +33,17 @@ const CheckoutConfirmationStyle = styled(motion.div)`
     justify-content: center;
     align-items: center;
   }
+  .cart__checkout-btn:hover{
+    background-color: white ;
+    border-color: var(--bg-dark);
+    color:  var(--bg-dark);
+    border: 0.1rem solid var(--bg-dark);
+    transition: all 0.4s;
+  }
+  .cart__checkout-btn:active{
+    transform: scale(0.9);
+    transition: all 0.2s;
+  }
 `
 
 export default CheckoutConfirmationStyle

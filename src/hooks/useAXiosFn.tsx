@@ -4,28 +4,28 @@ import {
   AxiosFetchParams
 } from './types.hooks'
 
-function useAxiosFunction <T=undefined> ():[RESPONSEAPI<T>, ReturnErrUseAxiosFn,
-  ReturnLoadUseAxiosFn, ReturnUseAxiosFn] {
+function useAxiosFunction <T=undefined, K=undefined> ():[RESPONSEAPI<T>, ReturnErrUseAxiosFn,
+  ReturnLoadUseAxiosFn, ReturnUseAxiosFn<K>] {
   const [response, setResponse] =
     useState <RESPONSEAPI<T>>({} as RESPONSEAPI<T>)
   const [error, setError] = useState<ReturnErrUseAxiosFn>(false)
   const [loading, setLoading] = useState<ReturnLoadUseAxiosFn>(false)
   const [controller, setController] = useState<CtrlUseAxiosFn>()
 
-  const axiosFetch = async (configObj:AxiosFetchParams) => {
+  const axiosFetch = async (configObj:AxiosFetchParams<K>) => {
     const {
       axiosInstance,
       method,
       url,
       requestConfig = {}
     } = configObj
-
     try {
       setLoading(true)
       const ctrl = new AbortController()
       setController(ctrl)
-      const res = await axiosInstance[method](url, {
+      const res = await axiosInstance(url, {
         ...requestConfig,
+        method,
         signal: ctrl.signal,
         timeout: 10000
       })

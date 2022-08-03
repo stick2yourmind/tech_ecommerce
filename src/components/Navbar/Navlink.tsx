@@ -2,8 +2,8 @@ import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
 interface NavlinkProps {
+  title: string,
   to: string
-  title: string
 }
 
 const Navlink:React.FC<NavlinkProps> = ({ to, title }) => {

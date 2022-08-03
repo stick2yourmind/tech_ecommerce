@@ -3,6 +3,8 @@ import Home from '../../pages/Home/Home'
 import Category from '../../pages/Category/Category'
 import Product from '../../pages/Product/Product'
 import CheckoutConfirmation from '../../pages/Checkout/CheckoutConfirmation'
+import Sign from '../../pages/Sign/Sign'
+import Profile from '../../pages/Profile'
 
 const Main = () => {
   return (
@@ -30,6 +32,12 @@ const Main = () => {
       />
       <Route path="/product/:productId"
         element={<Product/>}
+      />
+      <Route path="/sign/:params"
+        element={<Sign/>}
+      />
+      <Route path="/profile"
+        element={<Profile/>}
       />
       <Route path="/cart/checkout" element={<CheckoutConfirmation/>} />
       <Route path='*' element={ <Navigate to='/'/> } />

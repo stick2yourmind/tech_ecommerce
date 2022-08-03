@@ -49,11 +49,19 @@ const StyleHeader = styled(motion.header)`
     justify-content: center;
     align-items: center;
   }
-  #navbar-sign-checkout__signtext{
+  #navbar-sign-checkout__signtext,#navbar-sign-checkout__signtext--name{
     color: var(--cl-text);
     font-size: 1.4rem;
     font-family: Roboto;
     font-weight: 300;
+  }
+  #navbar-sign-checkout__signtext--name{
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 10rem;
   }
   #navbar-sign-checkout__btn{
     height: 100%;
