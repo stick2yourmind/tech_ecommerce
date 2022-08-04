@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { CartProduct, deleteProduct } from '../../app/features/cartSlice'
 import CheckoutProductStyle from './CheckoutProductStyle'
+import { CartProduct, deleteProduct } from '../../app/features/cartSlice'
 import deleteImg from './delete.svg'
 import { Variants } from 'framer-motion'
 

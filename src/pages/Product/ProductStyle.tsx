@@ -21,6 +21,7 @@ const ProductStyle = styled(motion.div)`
   }
   .product-detail__img{
     width: 80%;
+    mix-blend-mode: multiply;
   }
   .product-detail__description{
     white-space: pre-wrap;       

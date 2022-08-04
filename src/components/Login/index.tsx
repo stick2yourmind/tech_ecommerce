@@ -24,6 +24,11 @@ export interface REQDataLoginUser{
   email: string
   password: string
 }
+export interface LocationState{
+  from:{
+    pathname: string
+  }
+}
 const Login = () => {
   const [res, err, loading, axiosFn] = useAxiosFunction<RESDataLoginUser, REQDataLoginUser>()
   const navigate = useNavigate()

@@ -17,7 +17,6 @@ const Slider:React.FC<SliderProps> =
   const [width, setWidth] = useState<number>(0)
   const [transX, setTransX] = useState<number>(0)
   const [res, err, loading, axiosFn] = useAxiosFunction<RESDataGetAllProducts>()
-  console.log(endpoint)
   useEffect(() => {
     const getData = () => {
       axiosFn({

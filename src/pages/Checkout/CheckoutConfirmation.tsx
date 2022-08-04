@@ -5,17 +5,54 @@ import CheckoutProduct from '../../components/CheckoutProduct/CheckoutProduct'
 import { setConfirmCheckout } from '../../app/features/cartSlice'
 import { Link, useNavigate } from 'react-router-dom'
 import { Variants, AnimatePresence } from 'framer-motion'
+import useAxiosFunction from '../../hooks/useAXiosFn'
+import axiosInstance from '../../app/api/axios'
+import { useEffect } from 'react'
+
+export interface RESDataCreateCart{
+  _id: string
+}
+
+export interface REQDataCreateCart{
+  checkoutAddress: string
+  userId: string
+}
 
 const CheckoutConfirmation = () => {
   const cartProducts = useSelector((state:RootState) => state.cart.products)
+  const user = useSelector((state:RootState) => state.user.data)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [res, err, loading, axiosFn] = useAxiosFunction<RESDataCreateCart, REQDataCreateCart>()
   const container:Variants = {
     exit: { opacity: 0 },
     hidden: { opacity: 0 },
     show: { opacity: 1 }
   }
+  useEffect(() => {
+    if (res?.data) {
+      dispatch(setConfirmCheckout({ _id: res.data._id }))
+      console.log(res.data._id)
+      navigate('/cart/destination', { replace: true })
+    }
+  }, [res])
+
   const CheckoutProducts = () => {
-    const navigate = useNavigate()
+    const checkoutHandler = () => {
+      if (user?._id && user?.address)
+        axiosFn({
+          axiosInstance,
+          method: 'post',
+          requestConfig: {
+            data: {
+              checkoutAddress: user.address,
+              userId: user._id
+            }
+          },
+          url: import.meta.env.VITE_POST_CREATE_CART_EP
+        })
+      else navigate('/sign/login', { replace: true })
+    }
     return (
       <>
         <AnimatePresence>
@@ -33,12 +70,12 @@ const CheckoutConfirmation = () => {
         <h3 className='cart__total-price'>Total: $
           {cartProducts.reduce((sum, product) => sum + product.price * product.quantity, 0) }
         </h3>
-        <button className="cart__checkout-btn" onClick={() => {
-          dispatch(setConfirmCheckout())
-          navigate('/cart/destination', { replace: true })
-        }}>
+        <button className="cart__checkout-btn" onClick={checkoutHandler}>
           Confirmar compra
         </button>
+        {!loading && err &&
+            <p className='errMsg'>{`Un error ha ocurrido, reintente nuevamente: ${err}`}</p>
+          }
       </>)
   }
   const emptyCart = () => {

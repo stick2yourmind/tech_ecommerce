@@ -3,6 +3,9 @@ import {
   ReturnUseAxiosFn, RESPONSEAPI, ReturnErrUseAxiosFn, ReturnLoadUseAxiosFn, CtrlUseAxiosFn,
   AxiosFetchParams
 } from './types.hooks'
+import { useSelector } from 'react-redux'
+import { RootState } from '../app/store'
+import { AxiosInstance } from 'axios'
 
 function useAxiosFunction <T=undefined, K=undefined> ():[RESPONSEAPI<T>, ReturnErrUseAxiosFn,
   ReturnLoadUseAxiosFn, ReturnUseAxiosFn<K>] {
@@ -11,7 +14,9 @@ function useAxiosFunction <T=undefined, K=undefined> ():[RESPONSEAPI<T>, ReturnE
   const [error, setError] = useState<ReturnErrUseAxiosFn>(false)
   const [loading, setLoading] = useState<ReturnLoadUseAxiosFn>(false)
   const [controller, setController] = useState<CtrlUseAxiosFn>()
-
+  const accessToken = useSelector((state:RootState) => state.user.data?.accessToken)
+  let axiosReference: AxiosInstance
+  let requestInterceptor: number
   const axiosFetch = async (configObj:AxiosFetchParams<K>) => {
     const {
       axiosInstance,
@@ -19,6 +24,11 @@ function useAxiosFunction <T=undefined, K=undefined> ():[RESPONSEAPI<T>, ReturnE
       url,
       requestConfig = {}
     } = configObj
+    axiosReference = axiosInstance
+    requestInterceptor = axiosReference.interceptors.request.use(cfg => {
+      cfg.headers = { ...cfg.headers, authorization: `Bearer ${accessToken}` }
+      return cfg
+    }, err => Promise.reject(err))
     try {
       setLoading(true)
       const ctrl = new AbortController()
@@ -29,6 +39,7 @@ function useAxiosFunction <T=undefined, K=undefined> ():[RESPONSEAPI<T>, ReturnE
         signal: ctrl.signal,
         timeout: 10000
       })
+      console.log('🚀 ~ file: useAXiosFn.tsx ~ line 32 ~ axiosFetch ~ res', res.headers)
       setResponse(res.data)
       setError(false)
     } catch (err) {
@@ -40,7 +51,11 @@ function useAxiosFunction <T=undefined, K=undefined> ():[RESPONSEAPI<T>, ReturnE
 
   useEffect(() => {
     // useEffect cleanup function
-    return () => controller && controller.abort()
+    return () => {
+      controller && controller.abort()
+      if (axiosReference)
+        axiosReference.interceptors.request.eject(requestInterceptor)
+    }
   }, [controller])
 
   return [response, error, loading, axiosFetch]

@@ -5,6 +5,7 @@ export type CartProduct = Omit<Product, 'category' | 'description' | 'stock'> & 
   quantity: number
 }
 export interface CartState{
+  _id?: string,
   isConfirmed: boolean,
   length: number,
   products: CartProduct[]
@@ -14,7 +15,9 @@ export interface Action<T>{
   type: string
 }
 export type DeleteProduct = Pick<CartProduct, '_id'>
+export type CreateCart = Pick<CartProduct, '_id'>
 const initialState: CartState = {
+  _id: undefined,
   isConfirmed: false,
   length: 0,
   products: []
@@ -29,8 +32,9 @@ export const cartReducer = createSlice({
       state.length = state.products.length
     },
 
-    setConfirmCheckout: (state) => {
+    setConfirmCheckout: (state, action:PayloadAction<CreateCart>) => {
       state.isConfirmed = true
+      state._id = action.payload._id
     },
 
     updateCreateProduct: (state, action:PayloadAction<CartProduct>) => {
