@@ -1,39 +1,47 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import ShippingStyle from './ShippingStyle'
 import { Formik, Form as FormikForm } from 'formik'
 import ShippingSchema, { initShipping, ShippingForm } from '../../app/schema/shipping.schema'
 import useAxiosFunction from '../../hooks/useAXiosFn'
 import axiosInstance from '../../app/api/axios'
 import TextField from '../TextField'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../app/store'
+import { CartProduct } from '../../app/features/cartSlice'
 
-export interface RESDataCreateCart{
+export interface RESDataUpdShippingCart{
   _id: string
+  checkoutAddress: string
+  products: CartProduct[]
+  user: string
 }
 
-export interface REQDataCreateCart{
-  checkoutAddress: string
-  userId: string
+export interface REQDataUpdShippingCart{
+  checkoutAddress: string | undefined
+  pickUp: boolean
 }
 const Shipping = () => {
-  const [res, err, loading, axiosFn] = useAxiosFunction<RESDataCreateCart, REQDataCreateCart>()
+  const [res, err, loading, axiosFn] = useAxiosFunction<RESDataUpdShippingCart, REQDataUpdShippingCart>()
   const navigate = useNavigate()
+  const user = useSelector((state:RootState) => state.user.data)
+  const cart = useSelector((state:RootState) => state.cart)
+  const [pickUp, setPickUp] = useState(false)
 
   // it only is triggered after succesful validation
-  const onSubmitRegister = (regValues:ShippingForm) => {
-    const data: REQDataCreateCart = {
-      address: regValues.address,
-      email: regValues.email,
-      name: regValues.name,
-      password: regValues.password,
-      phone: (regValues.phone) as number
+  const onSubmitShipping = (shippingValues:ShippingForm) => {
+    const data: REQDataUpdShippingCart = {
+      checkoutAddress: !pickUp
+        ? (shippingValues.checkoutAddress === '' ? user?.address : shippingValues.checkoutAddress)
+        : '',
+      pickUp
     }
 
     axiosFn({
       axiosInstance,
-      method: 'post',
+      method: 'put',
       requestConfig: { data },
-      url: import.meta.env.VITE_POST_REGISTER_EP
+      url: import.meta.env.VITE_PUT_SHIPPING_CART_EP + cart._id
     })
   }
   useEffect(() => {
@@ -43,29 +51,26 @@ const Shipping = () => {
   , [res])
   return (
     <ShippingStyle>
-      <h3 className='form__title'>Crea tu cuenta</h3>
+      <h3 className='form__title'>Envio o retiro en el local</h3>
       <Formik
-        initialValues={initRegister}
-        validationSchema={registerSchema}
-        onSubmit={onSubmitRegister}
+        initialValues={initShipping}
+        validationSchema={ShippingSchema}
+        onSubmit={onSubmitShipping}
       >
         <FormikForm className='form__body'>
-          <TextField label='Nombre' name='name' type='text' placeholder="Nombre" focus/>
-          <TextField label='Telefono' name='phone' type='tel' placeholder="Telefono"/>
-          <TextField label='Email' name='email' type='email' placeholder="Email"/>
-          <TextField label='Address' name='address' type='text' placeholder="Address"/>
-          <TextField label='Password' name='password' type='password' placeholder="Password"/>
-          <TextField label='passwordConfirmation' name='passwordConfirmation' type='password'
-          placeholder="Password"/>
-          <button className='form__submit-btn' type='submit'>Registrarse</button>
+          <TextField label='Direccion de envio' name='checkoutAddress' type='text'
+            placeholder={user?.address} disabled={pickUp} info/>
+          <label className='form__check-label' htmlFor="pickUp" onClick={() => setPickUp(prev => !prev)}>
+            Retirar en el local
+          <input className='form__check' type="checkbox" id='pickUp' name='pickUp' value='pickUp'
+            />
+          </label>
+          <button className='form__submit-btn' type='submit'>Confirmar</button>
           {!loading && err &&
             <p className='errMsg'>{`Un error ha ocurrido, reintente nuevamente: ${err}`}</p>
           }
         </FormikForm>
       </Formik>
-      <Link className='form__sign-other' to='/sign/login'>
-        Ingresar
-      </Link>
     </ShippingStyle>
   )
 }

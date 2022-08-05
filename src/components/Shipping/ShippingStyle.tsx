@@ -39,5 +39,13 @@ const ShippingStyle = styled.div`
     font-family: 'Roboto',sans-serif;
     color: var(--bg-dark);
   }
+  .form__check-label{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .form__check{
+    margin: 1rem;
+  }
 `
 export default ShippingStyle

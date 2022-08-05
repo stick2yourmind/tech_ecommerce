@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import CheckoutConfirmationStyle from './CheckoutConfirmationStyle'
 import CheckoutProduct from '../../components/CheckoutProduct/CheckoutProduct'
-import { setConfirmCheckout } from '../../app/features/cartSlice'
+import { setConfirmCheckout, CartProduct } from '../../app/features/cartSlice'
 import { Link, useNavigate } from 'react-router-dom'
 import { Variants, AnimatePresence } from 'framer-motion'
 import useAxiosFunction from '../../hooks/useAXiosFn'
@@ -14,10 +14,8 @@ export interface RESDataCreateCart{
 }
 
 export interface REQDataCreateCart{
-  checkoutAddress: string
-  userId: string
+  products: CartProduct[]
 }
-
 const CheckoutConfirmation = () => {
   const cartProducts = useSelector((state:RootState) => state.cart.products)
   const user = useSelector((state:RootState) => state.user.data)
@@ -32,8 +30,8 @@ const CheckoutConfirmation = () => {
   useEffect(() => {
     if (res?.data) {
       dispatch(setConfirmCheckout({ _id: res.data._id }))
-      console.log(res.data._id)
-      navigate('/cart/destination', { replace: true })
+      console.log('🚀 ~ file: CheckoutConfirmation.tsx ~ line 33 ~ useEffect ~ res.data', res.data)
+      navigate('/cart/shipping', { replace: true })
     }
   }, [res])
 
@@ -45,8 +43,7 @@ const CheckoutConfirmation = () => {
           method: 'post',
           requestConfig: {
             data: {
-              checkoutAddress: user.address,
-              userId: user._id
+              products: cartProducts
             }
           },
           url: import.meta.env.VITE_POST_CREATE_CART_EP

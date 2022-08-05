@@ -27,6 +27,7 @@ function useAxiosFunction <T=undefined, K=undefined> ():[RESPONSEAPI<T>, ReturnE
     axiosReference = axiosInstance
     requestInterceptor = axiosReference.interceptors.request.use(cfg => {
       cfg.headers = { ...cfg.headers, authorization: `Bearer ${accessToken}` }
+      console.log('🚀 ~ file: useAXiosFn.tsx ~ line 30 ~ axiosFetch ~ accessToken', accessToken)
       return cfg
     }, err => Promise.reject(err))
     try {
