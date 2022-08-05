@@ -1,15 +1,39 @@
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import StyleHeader from './StyleHeader'
 import Navbar from '../Navbar/Navbar'
 import getFileUrl from '../../utils/publicFile.utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../app/store'
 import { cleanUser } from '../../app/features/userSlice'
+import useAxiosFunction from '../../hooks/useAXiosFn'
+import axiosInstance from '../../app/api/axios'
+
+export interface RESdataLogoutUser{
+  logout: boolean
+}
 
 const Header = () => {
+  const [res, err, loading, axiosFn] = useAxiosFunction<RESdataLogoutUser>()
   const cartLength = useSelector((state: RootState) => state.cart.length)
   const name = useSelector((state: RootState) => state.user.data?.name)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const logout = () => {
+    axiosFn({
+      axiosInstance,
+      method: 'get',
+      url: import.meta.env.VITE_GET_LOGOUT_EP
+    })
+  }
+  useEffect(() => {
+    if (res.statusCode === 200) {
+      dispatch(cleanUser())
+      navigate('/', { replace: true })
+    }
+  }
+  , [res])
   return (
     <StyleHeader>
       <Link id='navbar-logo' to='/'>
@@ -32,9 +56,12 @@ const Header = () => {
              <p id='navbar-sign-checkout__signtext'>{`, ${name}`}</p>
             </Link>
             <Link id='navbar-sign-checkout__sign' to="/"
-              onClick={() => dispatch(cleanUser())}
+              onClick={() => logout() }
             >
              <p id='navbar-sign-checkout__signtext'>Salir</p>
+             {!loading && err &&
+              <p className='errMsg'>{`Un error ha ocurrido, reintente nuevamente: ${err}`}</p>
+             }
             </Link>
             </>
             )

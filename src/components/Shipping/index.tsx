@@ -46,7 +46,7 @@ const Shipping = () => {
   }
   useEffect(() => {
     if (res.statusCode === 200)
-      navigate('/login', { replace: true })
+      navigate('/cart/payment', { replace: true })
   }
   , [res])
   return (

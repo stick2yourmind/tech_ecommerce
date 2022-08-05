@@ -50,6 +50,7 @@ const Login = () => {
   }
   useEffect(() => {
     if (res.data) {
+      console.log('🚀 ~ file: login.tsx ~ line 53 ~ useEffect ~ res.data', res.data)
       dispatch(setUser({
         _id: res.data?._id,
         accessToken: res.data?.accessToken,

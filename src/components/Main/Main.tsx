@@ -6,6 +6,7 @@ import CheckoutConfirmation from '../../pages/Checkout/CheckoutConfirmation'
 import Sign from '../../pages/Sign/Sign'
 import Profile from '../../pages/Profile'
 import ShippingPickUp from '../../pages/ShippingPickUp'
+import Payment from '../../pages/Payment'
 
 const Main = () => {
   return (
@@ -42,6 +43,7 @@ const Main = () => {
       />
       <Route path="/cart/checkout" element={<CheckoutConfirmation/>} />
       <Route path="/cart/shipping" element={<ShippingPickUp/>} />
+      <Route path="/cart/payment" element={<Payment/>} />
       <Route path='*' element={ <Navigate to='/'/> } />
     </Routes>
   )

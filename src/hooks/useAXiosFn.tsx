@@ -5,7 +5,7 @@ import {
 } from './types.hooks'
 import { useSelector } from 'react-redux'
 import { RootState } from '../app/store'
-import { AxiosInstance } from 'axios'
+import { AxiosRequestConfig } from 'axios'
 
 function useAxiosFunction <T=undefined, K=undefined> ():[RESPONSEAPI<T>, ReturnErrUseAxiosFn,
   ReturnLoadUseAxiosFn, ReturnUseAxiosFn<K>] {
@@ -15,8 +15,6 @@ function useAxiosFunction <T=undefined, K=undefined> ():[RESPONSEAPI<T>, ReturnE
   const [loading, setLoading] = useState<ReturnLoadUseAxiosFn>(false)
   const [controller, setController] = useState<CtrlUseAxiosFn>()
   const accessToken = useSelector((state:RootState) => state.user.data?.accessToken)
-  let axiosReference: AxiosInstance
-  let requestInterceptor: number
   const axiosFetch = async (configObj:AxiosFetchParams<K>) => {
     const {
       axiosInstance,
@@ -24,22 +22,25 @@ function useAxiosFunction <T=undefined, K=undefined> ():[RESPONSEAPI<T>, ReturnE
       url,
       requestConfig = {}
     } = configObj
-    axiosReference = axiosInstance
-    requestInterceptor = axiosReference.interceptors.request.use(cfg => {
-      cfg.headers = { ...cfg.headers, authorization: `Bearer ${accessToken}` }
-      console.log('🚀 ~ file: useAXiosFn.tsx ~ line 30 ~ axiosFetch ~ accessToken', accessToken)
-      return cfg
-    }, err => Promise.reject(err))
     try {
       setLoading(true)
       const ctrl = new AbortController()
       setController(ctrl)
-      const res = await axiosInstance(url, {
+      let reqCfg:AxiosRequestConfig = {
         ...requestConfig,
         method,
         signal: ctrl.signal,
         timeout: 10000
-      })
+      }
+      if (accessToken)
+        reqCfg = {
+          ...reqCfg,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            authorization: `Bearer ${accessToken}`
+          }
+        }
+      const res = await axiosInstance(url, reqCfg)
       console.log('🚀 ~ file: useAXiosFn.tsx ~ line 32 ~ axiosFetch ~ res', res.headers)
       setResponse(res.data)
       setError(false)
@@ -54,8 +55,6 @@ function useAxiosFunction <T=undefined, K=undefined> ():[RESPONSEAPI<T>, ReturnE
     // useEffect cleanup function
     return () => {
       controller && controller.abort()
-      if (axiosReference)
-        axiosReference.interceptors.request.eject(requestInterceptor)
     }
   }, [controller])
 
