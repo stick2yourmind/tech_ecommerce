@@ -51,6 +51,8 @@ const CreditCardPaymentStyle = styled.div`
   }
   .card__number{
     font-size: 3rem;
+    min-height: 2.5rem;
+    min-width: 2.5rem;
   }
   .card__valid-date{
     font-size: 1.2rem;
@@ -89,6 +91,8 @@ const CreditCardPaymentStyle = styled.div`
     font-size: 1.5rem;
     padding: 1rem;
     background-color: whitesmoke;
+    min-width: 5rem;
+    min-height: 5rem;
   }
   .card__back{
     transform: rotateY(180deg);

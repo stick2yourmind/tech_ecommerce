@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import { ChangeEvent } from 'React'
 import CreditCardPaymentStyle from './CreditCardPaymentStyle'
 import chipImg from './img/chip.png'
 import mapImg from './img/map.png'
 import patternImg from './img/pattern.png'
 import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import CreditCardSchema, { initCreditCard, creditCardForm } from '../../app/schema/creditCard.schema'
 
-import CreditCardSchema, { initCreditCard, CreditCardForm } from '../../app/schema/creditCard.schema'
-
-import { Formik, Form as FormikForm, Field, useFormikContext, ErrorMessage } from 'formik'
+import { Formik, Form as FormikForm, Field } from 'formik'
 import useAxiosFunction from '../../hooks/useAXiosFn'
 import axiosInstance from '../../app/api/axios'
+import TextField from '../TextField'
 import { useNavigate, Navigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../app/store'
@@ -43,33 +44,7 @@ export interface RESDataCreateOrder{
 
 export interface REQDataCreateOrder{
   cartId: string
-  creditCard: CreditCardForm
-}
-
-export interface FormObserverProps{
-  setCvv: React.Dispatch<React.SetStateAction<string>>,
-  setFromMonth: React.Dispatch<React.SetStateAction<string>>,
-  setFromYear: React.Dispatch<React.SetStateAction<string>>,
-  setNumber: React.Dispatch<React.SetStateAction<string>>,
-  setOwner: React.Dispatch<React.SetStateAction<string>>,
-  setThruMonth: React.Dispatch<React.SetStateAction<string>>,
-  setThruYear: React.Dispatch<React.SetStateAction<string>>
-}
-const FormObserver: React.FC<FormObserverProps> = ({
-  setNumber, setCvv, setFromMonth,
-  setFromYear, setThruMonth, setThruYear, setOwner
-}) => {
-  const { values } = useFormikContext<CreditCardForm>()
-  useEffect(() => {
-    setNumber(values.number)
-    setCvv(values.cvv)
-    setFromMonth(values.fromMonth)
-    setFromYear(values.fromYear)
-    setThruMonth(values.thruMonth)
-    setThruYear(values.thruYear)
-    setOwner(values.owner)
-    console.log('FormObserver::values', values)
-  }, [values]); return null
+  creditCard: creditCardForm
 }
 
 const CreditCardPayment = () => {
@@ -85,7 +60,7 @@ const CreditCardPayment = () => {
   const navigate = useNavigate()
   const cartId = useSelector((state:RootState) => state.cart._id)
   const dispatch = useDispatch()
-  const onSubmitPayment = (formValues:CreditCardForm) => {
+  const onSubmitPayment = (formValues:creditCardForm) => {
     const data: REQDataCreateOrder = {
       cartId: cartId as string,
       creditCard: {
@@ -165,71 +140,46 @@ const CreditCardPayment = () => {
         onSubmit={onSubmitPayment}
       >
         <FormikForm className='form__body'>
-          <FormObserver setNumber={setNumber} setCvv={setCvv} setFromMonth={setFromMonth}
-          setFromYear={setFromYear} setThruMonth={setThruMonth}
-          setThruYear={setThruYear} setOwner={setOwner}
-          />
           <Field label='number' name='number' type='text' placeholder="Numero de tarjeta"
           onFocus={() => setRotate(false)}
-          // onFocu={(text:string) => setNumber(text)}
+          onChange={(e:ChangeEvent<HTMLInputElement>) => setNumber(e.target.value)}
           pattern="[0-9]*" minLength="16" maxLength="16"
           />
-          <div className='error'>
-            <ErrorMessage className='error__msg' name="number" component="p" />
-          </div>
           <Field label='valid from month' name='fromMonth' type='text'
           placeholder="Mes inicial de validez"
           onFocus={() => setRotate(false)}
-          // onFocu={(text:string) => setFromMonth(text)}
+          onChange={(e:ChangeEvent<HTMLInputElement>) => setFromMonth(e.target.value)}
           pattern="[0-9]*" minLength="2" maxLength="2"
           />
-          <div className='error'>
-            <ErrorMessage className='error__msg' name="fromMonth" component="p" />
-          </div>
           <Field label='valid from year' name='fromYear' type='text'
           placeholder="Año inicial de validez"
           onFocus={() => setRotate(false)}
-          // onFocu={(text:string) => setFromYear(text)}
+          onChange={(e:ChangeEvent<HTMLInputElement>) => setFromYear(e.target.value)}
           pattern="[0-9]*" minLength="4" maxLength="4"
           />
-          <div className='error'>
-            <ErrorMessage className='error__msg' name="fromYear" component="p" />
-          </div>
           <Field label='valid thru month' name='thruMonth' type='text'
           placeholder="Mes final de validez"
           onFocus={() => setRotate(false)}
-          // onFocu={(text:string) => setThruMonth(text)}
+          onChange={(e:ChangeEvent<HTMLInputElement>) => setThruMonth(e.target.value)}
           pattern="[0-9]*" minLength="2" maxLength="2"
           />
-          <div className='error'>
-            <ErrorMessage className='error__msg' name="thruMonth" component="p" />
-          </div>
           <Field label='valid thru year' name='thruYear' type='text'
           placeholder="Año final de validez"
           onFocus={() => setRotate(false)}
-          // onFocu={(text:string) => setThruYear(text)}
+          onChange={(e:ChangeEvent<HTMLInputElement>) => setThruYear(e.target.value)}
           pattern="[0-9]*" minLength="4" maxLength="4"
           />
-          <div className='error'>
-            <ErrorMessage className='error__msg' name="thruYear" component="p" />
-          </div>
           <Field label='owner' name='owner' type='text'
           placeholder="Cliente de la tarjeta"
           onFocus={() => setRotate(false)}
-          // onFocu={(text:string) => setOwner(text)}
+          onChange={(e:ChangeEvent<HTMLInputElement>) => setOwner(e.target.value)}
           maxLength="20"
           />
-          <div className='error'>
-            <ErrorMessage className='error__msg' name="owner" component="p" />
-          </div>
-          <Field label='cvv' name='cvv' type='text' placeholder="CVV"
+          <Field label='cvv' name='text' type='text' placeholder="CVV"
           onFocus={() => setRotate(true)}
-          // onFocu={(text:string) => setCvv(text)}
+          onChange={(e:ChangeEvent<HTMLInputElement>) => setCvv(e.target.value)}
           pattern="[0-9]*" minLength="3" maxLength="3"
           />
-          <div className='error'>
-            <ErrorMessage className='error__msg' name="cvv" component="p" />
-          </div>
           <button className='form__submit-btn' type='submit'>Confirmar</button>
           {!loading && err &&
             <p className='errMsg'>{`Un error ha ocurrido, reintente nuevamente: ${err}`}</p>

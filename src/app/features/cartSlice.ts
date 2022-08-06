@@ -26,12 +26,18 @@ export const cartReducer = createSlice({
   initialState,
   name: 'cart',
   reducers: {
+    cleanCart: (state) => {
+      state._id = initialState._id
+      state.isConfirmed = initialState.isConfirmed
+      state.length = initialState.length
+      state.products = initialState.products
+    },
+
     deleteProduct: (state, action:PayloadAction<DeleteProduct>) => {
       const newProducts = state.products.filter(product => product._id !== action.payload._id)
       state.products = newProducts
       state.length = state.products.length
     },
-
     setConfirmCheckout: (state, action:PayloadAction<CreateCart>) => {
       state.isConfirmed = true
       state._id = action.payload._id
@@ -51,5 +57,5 @@ export const cartReducer = createSlice({
   }
 })
 
-export const { deleteProduct, updateCreateProduct, setConfirmCheckout } = cartReducer.actions
+export const { deleteProduct, updateCreateProduct, setConfirmCheckout, cleanCart } = cartReducer.actions
 export default cartReducer.reducer
