@@ -3,7 +3,8 @@ import { motion } from 'framer-motion'
 
 const CategoryStyle = styled(motion.div)`
   width: 90vw;
-  min-height: 50rem;
+  margin: auto;
+  min-height: calc(100vh - 9rem); 
   display: flex;
   justify-content:center;
   align-items: center;

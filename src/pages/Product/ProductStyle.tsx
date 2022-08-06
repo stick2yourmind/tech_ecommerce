@@ -5,6 +5,7 @@ const ProductStyle = styled(motion.div)`
   width: 90vw;
   max-width: 100rem;
   margin: auto;
+  min-height: calc(100vh - 9rem); 
   .product-detail{
     width: 100%;
     display: flex;
