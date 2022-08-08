@@ -7,9 +7,11 @@ import Sign from '../../pages/Sign/Sign'
 import Profile from '../../pages/Profile'
 import ShippingPickUp from '../../pages/ShippingPickUp'
 import Payment from '../../pages/Payment'
+import Chat from '../Chat'
 
 const Main = () => {
   return (
+    <>
     <Routes>
       <Route path="/" element={<Home/>} />
       <Route path="/category/hardware"
@@ -46,6 +48,8 @@ const Main = () => {
       <Route path="/cart/payment" element={<Payment/>} />
       <Route path='*' element={ <Navigate to='/'/> } />
     </Routes>
+    <Chat/>
+    </>
   )
 }
 

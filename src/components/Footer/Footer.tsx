@@ -2,7 +2,6 @@ import FooterStyle from './FooterStyle'
 import email from '../../assets/img/email.svg'
 import phone from '../../assets/img/phone.svg'
 import whatsapp from '../../assets/img/whatsapp.svg'
-
 const Footer = () => {
   return (
     <FooterStyle>
@@ -30,7 +29,6 @@ const Footer = () => {
             src={email}
           />
       </a>
-      <button className='footer__btn'>Chat</button>
     </FooterStyle>
   )
 }

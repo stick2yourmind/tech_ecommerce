@@ -19,10 +19,5 @@ const FooterStyle = styled.footer`
     filter: invert(99%) sepia(2%) saturate(641%) hue-rotate(171deg) brightness(123%) contrast(100%);
     padding: 0 2rem;
   }
-  .footer__btn{
-    position: fixed;
-    bottom: 20%;
-    right: 10%;
-  }
 `
 export default FooterStyle
