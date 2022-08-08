@@ -16,17 +16,16 @@ const Chat = () => {
   const [chat, setChat] = useState<boolean>(false)
   const constraintsRef = useRef(null)
   return (
-    <ChatStyle
-    ref={constraintsRef}>
+    <ChatStyle ref={constraintsRef}>
       <AnimatePresence>
       {chat && <motion.div key="chat" className='chat'
         initial={{ opacity: 0, y: 0 }}
         animate={{ opacity: 1, y: -130 }}
         transition={{ restDelta: 50, stiffness: 400, type: 'spring' }}
         exit={{ opacity: 0, transition: { duration: 0.3 }, y: 0 }}
-        // drag="x"
-        // dragSnapToOrigin={false}
-        // dragConstraints={constraintsRef}
+        drag="x"
+        dragSnapToOrigin={false}
+        dragConstraints={constraintsRef}
         >
         <div className='chat__header'>
           <img src={logo} alt="logo chat" className='chat__logo'/>
