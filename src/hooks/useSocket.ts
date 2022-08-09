@@ -11,7 +11,7 @@ const useSocket = () => {
   const accessToken = useSelector((state:RootState) => state.user.data?.accessToken)
   useEffect(() => {
     const socketInstance = io(import.meta.env.VITE_WS_URL, {
-      extraHeaders: { authorization: `Bearer ${accessToken}` },
+      extraHeaders: accessToken ? { authorization: `Bearer ${accessToken}` } : undefined,
       query: {
         clientId: id
       }
@@ -19,7 +19,6 @@ const useSocket = () => {
     setSocket(socketInstance)
     return () => {
       socketInstance &&
-        socketInstance?.off('msgToClient') &&
         socketInstance.disconnect() && socketInstance.close()
     }
   }, [setSocket, accessToken])

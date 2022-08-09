@@ -6,15 +6,20 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 import logo from '../../assets/img/logo.svg'
 import send from '../../assets/img/send.svg'
 import useSocket from '../../hooks/useSocket'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../app/store'
 
 const Chat = () => {
   const [chat, setChat] = useState<boolean>(false)
   const [msg, setMsg] = useState<string>('')
   const constraintsRef = useRef(null)
   const socket = useSocket()
+  const userRole = useSelector((state:RootState) => state.user.data?.role)
+  const [clients, SetClients] = useState([])
 
   const sendData = (data:string) => {
-    socket && socket.emit('msgToServer', { msg: data })
+    socket && socket.emit('messages', { msg: 'messages' })
+    socket && socket.emit('privateMessages', { msg: 'que hace', room: data })
     console.log('sended')
   }
   const onSubmitChat = (e:FormEvent<HTMLFormElement>) => {
@@ -24,8 +29,9 @@ const Chat = () => {
   }
 
   useEffect(() => {
-    socket && socket.on('msgToClient', data => console.log(data)) &&
-    socket.on('clients', data => console.log(data))
+    socket && socket.on('messages', data => console.log(data)) &&
+    socket.on('privateMessages', data => console.log(data))
+
     return () => { socket?.off('msgToClient'); socket?.close() }
   }, [socket])
 
