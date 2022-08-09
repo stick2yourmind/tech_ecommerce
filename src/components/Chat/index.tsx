@@ -2,19 +2,33 @@ import ChatStyle from './ChatStyled'
 import { motion, AnimatePresence } from 'framer-motion'
 import openChatImg from './chat.svg'
 import closeChatImg from './close-light.svg'
-import { useRef, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 import logo from '../../assets/img/logo.svg'
 import send from '../../assets/img/send.svg'
-
-const variants = {
-  showBack: { rotateY: -180, transition: { duration: 0.1 } },
-  // You can do whatever you want here, if you just want it to stop completely use `rotate: 0`
-  showFront: { rotateY: 0, transition: { duration: 0.1 } }
-}
+import useSocket from '../../hooks/useSocket'
 
 const Chat = () => {
   const [chat, setChat] = useState<boolean>(false)
+  const [msg, setMsg] = useState<string>('')
   const constraintsRef = useRef(null)
+  const socket = useSocket()
+
+  const sendData = (data:string) => {
+    socket && socket.emit('msgToServer', { msg: data })
+    console.log('sended')
+  }
+  const onSubmitChat = (e:FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    sendData(msg)
+    setMsg('')
+  }
+
+  useEffect(() => {
+    socket && socket.on('msgToClient', data => console.log(data)) &&
+    socket.on('clients', data => console.log(data))
+    return () => { socket?.off('msgToClient'); socket?.close() }
+  }, [socket])
+
   return (
     <ChatStyle ref={constraintsRef}>
       <AnimatePresence>
@@ -44,8 +58,10 @@ const Chat = () => {
           <div className="chat__msg-container--client"><p className="chat__msg">Anotalo a nombre de Bankai</p></div>
           <div className="chat__msg-container--client"><p className="chat__msg">Te tengo que dejar una seña?</p></div>
         </div>
-        <form action="" className="chat__footer">
-          <input type="text" className="chat__input" />
+        <form action="" className="chat__footer" onSubmit={onSubmitChat}>
+          <input type="text" className="chat__input" name='msg'
+          value={msg}
+          onInput={(e:ChangeEvent<HTMLInputElement>) => { setMsg(e.target.value) }}/>
           <button className="chat__send-btn">
             <img src={send} alt="send message" className='chat__send-img' />
           </button>

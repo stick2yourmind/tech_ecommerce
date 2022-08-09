@@ -41,7 +41,6 @@ function useAxiosFunction <T=undefined, K=undefined> ():[RESPONSEAPI<T>, ReturnE
           }
         }
       const res = await axiosInstance(url, reqCfg)
-      console.log('🚀 ~ file: useAXiosFn.tsx ~ line 32 ~ axiosFetch ~ res', res.headers)
       setResponse(res.data)
       setError(false)
     } catch (err) {
