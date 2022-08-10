@@ -22,8 +22,9 @@ const useSocket = () => {
         socketInstance.disconnect() && socketInstance.close()
     }
   }, [setSocket, accessToken])
+  const use:[Socket | undefined, string] = [socket, id]
   return (
-    socket
+    use
   )
 }
 

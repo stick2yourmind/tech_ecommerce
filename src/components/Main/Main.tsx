@@ -8,7 +8,11 @@ import Profile from '../../pages/Profile'
 import ShippingPickUp from '../../pages/ShippingPickUp'
 import Payment from '../../pages/Payment'
 import Chat from '../Chat'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../app/store'
+import ChatAdmin from '../../pages/ChatAdmin'
 const Main = () => {
+  const user = useSelector((state:RootState) => state.user.data)
   return (
     <div >
     <Routes>
@@ -45,9 +49,13 @@ const Main = () => {
       <Route path="/cart/checkout" element={<CheckoutConfirmation/>} />
       <Route path="/cart/shipping" element={<ShippingPickUp/>} />
       <Route path="/cart/payment" element={<Payment/>} />
+      {user?.role === import.meta.env.VITE_ADMIN_ROLE &&
+      <Route path="/chat" element={<ChatAdmin/>} />
+      }
       <Route path='*' element={ <Navigate to='/'/> } />
     </Routes >
-    <Chat />
+    {user?.role !== import.meta.env.VITE_ADMIN_ROLE &&
+    <Chat />}
     </div>
   )
 }

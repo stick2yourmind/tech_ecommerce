@@ -6,31 +6,48 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 import logo from '../../assets/img/logo.svg'
 import send from '../../assets/img/send.svg'
 import useSocket from '../../hooks/useSocket'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../app/store'
 
+// Websocket sent data by client
+export interface WSClient{
+  msg: string
+}
+// Websocket received data by client
+export interface WRClient extends WSClient{
+  systemResponse: boolean
+}
+// Conversation may save received or sent data
+export interface Conversation{
+  msg: WSClient['msg']
+  systemResponse?: WRClient['systemResponse']
+}
 const Chat = () => {
   const [chat, setChat] = useState<boolean>(false)
+  const [conversation, setConversation] = useState<Conversation[]>([
+    {
+      msg: 'Buen dia, ¿en que podemos ayudarte?',
+      systemResponse: true
+    }])
   const [msg, setMsg] = useState<string>('')
   const constraintsRef = useRef(null)
-  const socket = useSocket()
-  const userRole = useSelector((state:RootState) => state.user.data?.role)
-  const [clients, SetClients] = useState([])
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [socket, clientId] = useSocket()
 
-  const sendData = (data:string) => {
-    socket && socket.emit('messages', { msg: 'messages' })
-    socket && socket.emit('privateMessages', { msg: 'que hace', room: data })
-    console.log('sended')
+  const sendData = (data:WSClient) => {
+    socket && socket.emit('privateMessages', data)
   }
   const onSubmitChat = (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    sendData(msg)
+    sendData({ msg })
+    setConversation(prev => [...prev, { msg }])
     setMsg('')
   }
 
   useEffect(() => {
     socket && socket.on('messages', data => console.log(data)) &&
-    socket.on('privateMessages', data => console.log(data))
+    socket.on('privateMessages', data => {
+      console.log(data)
+      setConversation(prev => [...prev, data])
+    })
 
     return () => { socket?.off('msgToClient'); socket?.close() }
   }, [socket])
@@ -52,17 +69,13 @@ const Chat = () => {
           <h1 className='chat__title'>@Labhard</h1>
         </div>
         <div className="chat__body">
-          <div className="chat__msg-container--client"><p className="chat__msg">Hola</p></div>
-          <div className="chat__msg-container--client"><p className="chat__msg">Buen dia</p></div>
-          <div className="chat__msg-container--client"><p className="chat__msg">Como va?</p></div>
-          <div className="chat__msg-container--client"><p className="chat__msg">Se puede retirar hoy?</p></div>
-          <div className="chat__msg-container--client"><p className="chat__msg">Quiero una 3090</p></div>
-          <div className="chat__msg-container--system"><p className="chat__msg">Hola, buen dia</p></div>
-          <div className="chat__msg-container--system"><p className="chat__msg">Si, estamos hasta las 18hs</p></div>
-          <div className="chat__msg-container--system"><p className="chat__msg">Si queres pasame tu nombre asi te la reservo</p></div>
-          <div className="chat__msg-container--client"><p className="chat__msg">Bueno</p></div>
-          <div className="chat__msg-container--client"><p className="chat__msg">Anotalo a nombre de Bankai</p></div>
-          <div className="chat__msg-container--client"><p className="chat__msg">Te tengo que dejar una seña?</p></div>
+          {conversation && conversation?.map((data, i) =>
+            <div key={i} className={data?.systemResponse
+              ? 'chat__msg-container--system'
+              : 'chat__msg-container--client'}>
+                <p className='chat__msg'>{data.msg}</p>
+            </div>
+          )}
         </div>
         <form action="" className="chat__footer" onSubmit={onSubmitChat}>
           <input type="text" className="chat__input" name='msg'
