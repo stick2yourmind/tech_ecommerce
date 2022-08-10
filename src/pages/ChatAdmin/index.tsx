@@ -57,12 +57,16 @@ const ChatAdmin = () => {
     socket && socket.on('messages', data => console.log(data)) &&
 
     socket.on('privateMessages', (data:WRAdminClient) => {
-      if (data.connections) dispatch(setConnections(data.connections))
-      else dispatch(setConversationTo({
+      dispatch(setConversationTo({
         clientId: data.clientId,
         msg: data.msg,
         systemResponse: data.systemResponse
       }))
+    }) &&
+
+    socket.on('connections', (data:{connections:WSConnections[]}) => {
+      console.log(data)
+      dispatch(setConnections(data.connections))
     })
 
     return () => { socket?.close() }
