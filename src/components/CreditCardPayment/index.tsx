@@ -68,7 +68,6 @@ const FormObserver: React.FC<FormObserverProps> = ({
     setThruMonth(values.thruMonth)
     setThruYear(values.thruYear)
     setOwner(values.owner)
-    console.log('FormObserver::values', values)
   }, [values]); return null
 }
 
@@ -107,7 +106,6 @@ const CreditCardPayment = () => {
   }
   useEffect(() => {
     if (res.statusCode === 200) {
-      console.log('🚀 ~ file: index.tsx ~ line 77 ~ useEffect ~ res', res)
       dispatch(cleanCart())
       navigate('/', { replace: true })
     }

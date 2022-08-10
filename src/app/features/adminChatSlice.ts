@@ -53,7 +53,6 @@ export const adminChatReducer = createSlice({
       state.connections = action.payload
     },
     setConversation: (state, action:PayloadAction<Conversation>) => {
-      console.log('🚀 ~ file: adminChatSlice.ts ~ line 57 ~ action.payload', action.payload)
       if (state.currentIndexSession || state.currentIndexSession === 0)
         state.sessions[state.currentIndexSession]
           .conversation

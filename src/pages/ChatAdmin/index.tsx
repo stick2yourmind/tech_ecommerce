@@ -54,7 +54,6 @@ const ChatAdmin = () => {
     socket && socket.on('messages', data => console.log(data)) &&
 
     socket.on('privateMessages', data => {
-      console.log('mensaje de potencial cliente: ', data)
       if (data.connections) dispatch(setConnections(data.connections))
       else dispatch(setConversation(data))
     })

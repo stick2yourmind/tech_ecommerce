@@ -30,7 +30,6 @@ const CheckoutConfirmation = () => {
   useEffect(() => {
     if (res?.data) {
       dispatch(setConfirmCheckout({ _id: res.data._id }))
-      console.log('🚀 ~ file: CheckoutConfirmation.tsx ~ line 33 ~ useEffect ~ res.data', res.data)
       navigate('/cart/shipping', { replace: true })
     }
   }, [res])
