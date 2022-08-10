@@ -3,7 +3,10 @@ import ChatAdminStyle from './ChatAdminStyle'
 import SendImg from '../../assets/img/send.svg'
 import useSocket from '../../hooks/useSocket'
 import { useDispatch, useSelector } from 'react-redux'
-import { setClientId, setConnections, setConversation } from '../../app/features/adminChatSlice'
+import {
+  setClientId, setConnections, setConversation,
+  setConversationTo, WRAdminClient
+} from '../../app/features/adminChatSlice'
 import { RootState } from '../../app/store'
 
 export interface WSConnections{
@@ -53,9 +56,13 @@ const ChatAdmin = () => {
   useEffect(() => {
     socket && socket.on('messages', data => console.log(data)) &&
 
-    socket.on('privateMessages', data => {
+    socket.on('privateMessages', (data:WRAdminClient) => {
       if (data.connections) dispatch(setConnections(data.connections))
-      else dispatch(setConversation(data))
+      else dispatch(setConversationTo({
+        clientId: data.clientId,
+        msg: data.msg,
+        systemResponse: data.systemResponse
+      }))
     })
 
     return () => { socket?.close() }

@@ -9,14 +9,30 @@ export interface WSConnections{
 export interface WSClient{
   msg: string
 }
+// Websocket sent data by admin client
+export interface WSAdminClient{
+  msg: string
+  room: string
+}
 // Websocket received data by client
 export interface WRClient extends WSClient{
   systemResponse: boolean
 }
+// Websocket received data by admin client
+export interface WRAdminClient extends WRClient{
+  clientId: WSAdminClient['room']
+  connections?: WSConnections[]
+}
 // Conversation may save received or sent data
 export interface Conversation{
   msg: WSClient['msg']
-  systemResponse?: WRClient['systemResponse']
+  systemResponse: WRClient['systemResponse']
+}
+// Conversation may save received or sent data
+export interface AdminConversation{
+  clientId: WRAdminClient['clientId'],
+  msg: WRAdminClient['msg'],
+  systemResponse: WRAdminClient['systemResponse']
 }
 export interface Session{
   clientId: string
@@ -57,9 +73,26 @@ export const adminChatReducer = createSlice({
         state.sessions[state.currentIndexSession]
           .conversation
           .push({ msg: action.payload.msg, systemResponse: action.payload.systemResponse })
+    },
+
+    setConversationTo: (state, action:PayloadAction<AdminConversation>) => {
+      const sessionIndex = state.sessions
+        .findIndex(session => session.clientId === action.payload.clientId)
+      if (sessionIndex >= 0)
+        state.sessions[sessionIndex]
+          .conversation
+          .push({ msg: action.payload.msg, systemResponse: action.payload.systemResponse })
+      else
+        state.sessions.push({
+          clientId: action.payload.clientId,
+          conversation: [{ msg: action.payload.msg, systemResponse: action.payload.systemResponse }]
+        })
     }
   }
 })
 
-export const { setConnections, setConversation, setClientId } = adminChatReducer.actions
+export const {
+  setConnections, setConversation, setClientId,
+  setConversationTo
+} = adminChatReducer.actions
 export default adminChatReducer.reducer
