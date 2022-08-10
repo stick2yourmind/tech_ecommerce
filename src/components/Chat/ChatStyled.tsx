@@ -20,19 +20,11 @@ const ChatStyle = styled(motion.div)`
   .chat__toggler{
     min-width: 6rem;
     min-height: 6rem;
-    /* position: fixed;
-    bottom: 8rem;
-    right: 17rem; */
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
     background-color: var(--bg-dark);
-  }
-  .footer__open-chat-btn{
-    /* position: fixed;
-    bottom: 20%;
-    right: 10%; */
   }
   .chat__open-img,.chat__close-img{
     padding: 1rem;
