@@ -61,6 +61,9 @@ const ChatStyle = styled(motion.div)`
   overflow-y: auto;
   padding: 1rem;
 }
+.chat__body div:last-child{
+  margin-bottom: 4rem;
+}
 .chat__msg-container--client {
   display: flex;
   align-items: center;

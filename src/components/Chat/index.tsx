@@ -29,17 +29,22 @@ const Chat = () => {
     }])
   const [msg, setMsg] = useState<string>('')
   const constraintsRef = useRef(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [socket, clientId] = useSocket()
 
   const sendData = (data:WSClient) => {
     socket && socket.emit('privateMessages', data)
+    if (scrollRef.current)
+      scrollRef.current.scrollTo({ behavior: 'smooth', top: scrollRef.current.scrollHeight })
   }
   const onSubmitChat = (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    sendData({ msg })
-    setConversation(prev => [...prev, { msg }])
-    setMsg('')
+    if (msg !== '') {
+      sendData({ msg })
+      setConversation(prev => [...prev, { msg }])
+      setMsg('')
+    }
   }
 
   useEffect(() => {
@@ -68,12 +73,14 @@ const Chat = () => {
           <img src={logo} alt="logo chat" className='chat__logo'/>
           <h1 className='chat__title'>@Labhard</h1>
         </div>
-        <div className="chat__body">
+        <div className="chat__body" ref={scrollRef}>
           {conversation && conversation?.map((data, i) =>
             <div key={i} className={data?.systemResponse
               ? 'chat__msg-container--system'
               : 'chat__msg-container--client'}>
-                <p className='chat__msg'>{data.msg}</p>
+                <p className='chat__msg'>
+                  {data.msg}
+                </p>
             </div>
           )}
         </div>

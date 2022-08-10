@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import cartReducer from './features/cartSlice'
 import userReducer from './features/userSlice'
+import adminChatReducer from './features/adminChatSlice'
 
 export const store = configureStore({
   reducer: {
+    adminChat: adminChatReducer,
     cart: cartReducer,
     user: userReducer
   }

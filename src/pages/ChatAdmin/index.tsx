@@ -1,14 +1,11 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react'
 import ChatAdminStyle from './ChatAdminStyle'
 import SendImg from '../../assets/img/send.svg'
 import useSocket from '../../hooks/useSocket'
+import { useDispatch, useSelector } from 'react-redux'
+import { setClientId, setConnections, setConversation } from '../../app/features/adminChatSlice'
+import { RootState } from '../../app/store'
 
-// const connections = [
-//   { clientId: '2f502a2e-51d6-4aed-804e-47f9071ad4e8', email: undefined, role: undefined },
-//   { clientId: '60021435-06b1-4b92-8d68-378610be969c', email: 'gon@hisoka.com', role: '444' },
-//   { clientId: 'd2fd742d-441f-4e2c-ad72-450cec9582bf', email: 'hisoka@gon.com', role: '444' },
-//   { clientId: 'f5e3734f-5e34-4150-85f7-967deed0b528', email: 'stk2@gmail.com', role: '777' }
-// ]
 export interface WSConnections{
   clientId: string
   email: string
@@ -29,51 +26,37 @@ export interface Session{
   conversation: DataWs[]
 }
 const ChatAdmin = () => {
-  const [connections, setConnections] = useState<WSConnections[]>([])
-  const [session, setSession] = useState<Session>()
   const [msg, setMsg] = useState<string>('')
   const [socket, clientId] = useSocket()
-  const [conversations, setConversations] = useState<Session[]>([])
-
-  const currentSession = (clientId:string) => {
-    const current = conversations.find(conversation => conversation.clientId === clientId)
-    return { clientId, conversation: current?.conversation ? current.conversation : [] }
-  }
+  const dispatch = useDispatch()
+  const sessions = useSelector((state:RootState) => state.adminChat.sessions)
+  const connections = useSelector((state:RootState) => state.adminChat.connections)
+  const currentClientIndex = useSelector((state:RootState) => state.adminChat.currentIndexSession)
+  const currentClientId = useSelector((state:RootState) => state.adminChat.currentClientId)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   const sendWs = (data:SendDataWs) => {
     socket && socket.emit('privateMessages', data)
-    setConversations(conversations => {
-      return conversations.filter(conversation => {
-        if (conversation?.clientId !== session?.clientId)
-          return conversation
-        return [{
-          clientId: conversation.clientId,
-          conversation: [...conversation.conversation, data]
-        }]
-      })
-    })
+    dispatch(setConversation({ msg: data.msg, systemResponse: true }))
+    if (scrollRef.current)
+      scrollRef.current.scrollTo({ behavior: 'smooth', top: scrollRef.current.scrollHeight })
     console.log('sended')
   }
 
   const onSubmitChat = (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    session && sendWs({ msg, room: session?.clientId })
+    if (msg !== '') {
+      currentClientId && sendWs({ msg, room: currentClientId })
+      setMsg('')
+    }
   }
   useEffect(() => {
     socket && socket.on('messages', data => console.log(data)) &&
+
     socket.on('privateMessages', data => {
       console.log('mensaje de potencial cliente: ', data)
-      if (data.connections) setConnections(data.connections)
-      else setConversations(conversations => {
-        return conversations.filter(conversation => {
-          if (conversation?.clientId !== session?.clientId)
-            return conversation
-          return [{
-            clientId: conversation.clientId,
-            conversation: [...conversation.conversation, data]
-          }]
-        })
-      })
+      if (data.connections) dispatch(setConnections(data.connections))
+      else dispatch(setConversation(data))
     })
 
     return () => { socket?.close() }
@@ -84,21 +67,24 @@ const ChatAdmin = () => {
       <div className="connections">
       {connections && connections.map(conn =>
         conn.clientId !== clientId && <button key={conn.clientId}
-        className={session?.clientId === conn.clientId ? 'chat__client-id--chatting' : 'chat__client-id'}
-          onClick={() => setSession(currentSession(conn.clientId))}
+        className={currentClientId === conn.clientId ? 'chat__client-id--chatting' : 'chat__client-id'}
+          onClick={() => dispatch(setClientId(conn.clientId))}
         >
           <p>{conn.clientId}</p>
           <p>{conn.email ? conn.email : 'usuario no logeado'}</p>
         </button>)}
       </div>
-      {session?.clientId &&
+      {currentClientId &&
       <div className="chat">
-        <div className="chat__body">
-          {session?.conversation.map((data, i) =>
+        <div className="chat__body" ref={scrollRef}>
+          {currentClientIndex !== undefined &&
+          sessions[currentClientIndex]?.conversation.map((data, i) =>
               <div key={i} className={data.systemResponse
-                ? 'chat__msg-container--system'
-                : 'chat__msg-container--client'}>
-                  <p className='chat__msg'>{data.msg}</p>
+                ? 'chat__msg-container--client'
+                : 'chat__msg-container--system'}>
+                  <p className='chat__msg'>
+                    {data.msg}
+                  </p>
               </div>
           )}
         </div>
