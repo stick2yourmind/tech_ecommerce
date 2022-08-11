@@ -35,7 +35,7 @@ const Login = () => {
   const dispatch = useDispatch()
 
   // it only is triggered after succesful validation
-  const onSubmitRegister = (regValues:LoginForm) => {
+  const onSubmitLogin = (regValues:LoginForm) => {
     const data: REQDataLoginUser = {
       email: regValues.email,
       password: regValues.password
@@ -69,7 +69,7 @@ const Login = () => {
       <Formik
         initialValues={initLogin}
         validationSchema={LoginSchema}
-        onSubmit={onSubmitRegister}
+        onSubmit={onSubmitLogin}
       >
         <FormikForm className='form__body'>
           <TextField label='Email' name='email' type='email' placeholder="Email"/>

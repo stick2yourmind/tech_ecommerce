@@ -16,7 +16,7 @@ const ChatStyle = styled(motion.div)`
     top: -18.5rem;
     min-height: 30rem;
     min-width: 40rem;
-    cursor: grab;
+    /* cursor: grab; */
     z-index: 10;
   }
   .chat__toggler{

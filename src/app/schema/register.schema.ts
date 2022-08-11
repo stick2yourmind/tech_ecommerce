@@ -17,6 +17,7 @@ const registerSchema = Yup.object({
   passwordConfirmation: Yup.string()
     .oneOf([Yup.ref('password'), null], 'Las contraseñas deben ser iguales'),
   phone: Yup.number()
+    .typeError('El telefono solo debe contener numeros')
     .integer('Ingrese un número de telefono válido')
     .required('El telefono es requerido')
 })

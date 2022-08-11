@@ -1,6 +1,9 @@
 import styled from 'styled-components'
 
 const CreditCardPaymentStyle = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
   .card{
     width: 500px;
     height: 300px;
@@ -100,6 +103,38 @@ const CreditCardPaymentStyle = styled.div`
   /* .card:hover .card__inner{
     transform: rotateY(180deg);
   } */
+  .form__title {
+  margin: 2rem 0 0.5rem 0;
+  }
+  .form__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  }
+  .form__submit-btn {
+  background-color: rgba(34, 173, 187, 0.93);
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.2rem;
+  color: whitesmoke;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+  input{
+  line-height: 3rem;
+  width: 45rem; 
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: rgba(34,108,187,0.93);
+  border: 0.2rem solid #ccc;
+  border-radius: 0.4rem;
+  margin: 0.4rem 0;
+  }
+  input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgba(34,173,187,0.93);
+  opacity: 1;
+}
 `
 
 export default CreditCardPaymentStyle

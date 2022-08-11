@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { motion } from 'framer-motion'
 
 const StyleHeader = styled(motion.header)`
-  min-width: 100%;
+  min-width: 100vw;
   display: flex;
   justify-content: space-around;
   align-items: center;

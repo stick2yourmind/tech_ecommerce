@@ -60,10 +60,10 @@ const Register = () => {
         <FormikForm className='form__body'>
           <TextField label='Nombre' name='name' type='text' placeholder="Nombre" focus/>
           <TextField label='Telefono' name='phone' type='tel' placeholder="Telefono"/>
-          <TextField label='Email' name='email' type='email' placeholder="Email"/>
-          <TextField label='Address' name='address' type='text' placeholder="Address"/>
+          <TextField label='Email' name='email' type='email' placeholder="Correo electronico"/>
+          <TextField label='Address' name='address' type='text' placeholder="Direccion"/>
           <TextField label='Password' name='password' type='password' placeholder="Password"/>
-          <TextField label='passwordConfirmation' name='passwordConfirmation' type='password'
+          <TextField label='passwordConfirmation' name='passwordConfirmation' type='Password'
           placeholder="Password"/>
           <button className='form__submit-btn' type='submit'>Registrarse</button>
           {!loading && err &&

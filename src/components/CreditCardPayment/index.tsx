@@ -234,7 +234,7 @@ const CreditCardPayment = () => {
           }
         </FormikForm>
       </Formik>
-      {loading && <p>Confirmando datos</p>}
+      {loading && <p>Confirmando orden</p>}
       </>)}
     </CreditCardPaymentStyle>
   )
