@@ -94,16 +94,18 @@ const Chat = () => {
         </form>
         </motion.div>}
         </AnimatePresence>
-      <button className='chat__toggler' onClick={() => setChat(prev => !prev)}>
+      <button className='chat__toggler' >
           {!chat
             ? <motion.img src={openChatImg} alt="open chat" key="open-chat"
             className='chat__open-img'
+            onClick={() => setChat(prev => !prev)}
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
           />
             : <motion.img src={closeChatImg} alt="open chat" key="close-chat"
             className='chat__close-img'
+            onClick={() => setChat(prev => !prev)}
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3 }}

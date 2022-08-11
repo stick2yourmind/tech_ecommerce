@@ -106,6 +106,12 @@ const ChatAdminStyle = styled.div`
   width: 3rem;
   filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);
 }
+.chat__disconnected-client-msg{
+  font-size: 2rem;
+  color: #8836a6;
+  font-weight: 700;
+  text-align: center;
+}
 `
 
 export default ChatAdminStyle

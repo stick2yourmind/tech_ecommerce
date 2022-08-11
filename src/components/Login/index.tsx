@@ -75,8 +75,13 @@ const Login = () => {
           <TextField label='Email' name='email' type='email' placeholder="Email"/>
           <TextField label='Password' name='password' type='password' placeholder="Password"/>
           <button className='form__submit-btn' type='submit'>Ingresar</button>
-          {!loading && err &&
+          {!loading && err && !(err as string).includes('401') &&
             <p className='errMsg'>{`Un error ha ocurrido, reintente nuevamente: ${err}`}</p>
+          }
+          {!loading && err && (err as string).includes('401') &&
+            <p className='errMsg'>
+              {'Usuario o contraseña incorrecta, si no posee una cuenta debe registrarse primero'}
+            </p>
           }
         </FormikForm>
       </Formik>

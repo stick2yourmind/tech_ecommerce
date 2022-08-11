@@ -9,6 +9,8 @@ const ChatStyle = styled(motion.div)`
   justify-content: center;
   align-items: flex-end;
   flex-direction: column;
+  max-width: 6rem;
+  margin-left: 131rem;
   .chat{
     position: absolute;
     top: -18.5rem;

@@ -39,12 +39,14 @@ export interface Session{
   conversation: Conversation[]
 }
 export interface AdminChatState{
+  clientsConnected: number,
   connections: WSConnections[],
   currentClientId: string | undefined,
   currentIndexSession: number | undefined,
   sessions: Session[]
 }
 const initialState: AdminChatState = {
+  clientsConnected: 0,
   connections: [],
   currentClientId: undefined,
   currentIndexSession: undefined,
@@ -66,7 +68,12 @@ export const adminChatReducer = createSlice({
         state.currentIndexSession = sessionIndex
     },
     setConnections: (state, action:PayloadAction<WSConnections[]>) => {
+      let counter = 0
       state.connections = action.payload
+      action.payload.forEach(conn => {
+        if (conn?.role !== import.meta.env.VITE_ADMIN_ROLE) counter += 1
+      })
+      state.clientsConnected = counter
     },
     setConversation: (state, action:PayloadAction<Conversation>) => {
       if (state.currentIndexSession || state.currentIndexSession === 0)

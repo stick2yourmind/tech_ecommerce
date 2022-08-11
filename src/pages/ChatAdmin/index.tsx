@@ -25,7 +25,7 @@ export interface SendDataWs{
   room: string
 }
 export interface Session{
-  clientId: string
+  clientId: string,
   conversation: DataWs[]
 }
 const ChatAdmin = () => {
@@ -34,6 +34,7 @@ const ChatAdmin = () => {
   const dispatch = useDispatch()
   const sessions = useSelector((state:RootState) => state.adminChat.sessions)
   const connections = useSelector((state:RootState) => state.adminChat.connections)
+  const QClients = useSelector((state:RootState) => state.adminChat.clientsConnected)
   const currentClientIndex = useSelector((state:RootState) => state.adminChat.currentIndexSession)
   const currentClientId = useSelector((state:RootState) => state.adminChat.currentClientId)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -83,6 +84,7 @@ const ChatAdmin = () => {
           <p>{conn.clientId}</p>
           <p>{conn.email ? conn.email : 'usuario no logeado'}</p>
         </button>)}
+        {!QClients && <p className="chat__no-clients-connected-msg">No hay clientes conectados</p>}
       </div>
       {currentClientId &&
       <div className="chat">
@@ -101,11 +103,16 @@ const ChatAdmin = () => {
         <form action="" className="chat__footer" onSubmit={onSubmitChat}>
           <input type="text" className="chat__input" name='msg'
           value={msg}
-          onInput={(e:ChangeEvent<HTMLInputElement>) => { setMsg(e.target.value) }}/>
+          onInput={(e:ChangeEvent<HTMLInputElement>) => { setMsg(e.target.value) }}
+          disabled={!connections.some(conn => conn.clientId === currentClientId)}
+          />
           <button className="chat__send-btn">
             <img src={SendImg} alt="send message" className='chat__send-img' />
           </button>
         </form>
+          {!connections.some(conn => conn.clientId === currentClientId) &&
+          <p className='chat__disconnected-client-msg'>El cliente ha abandonado la sala de chat,
+          no es posible responder la conversación</p>}
       </div> }
     </ChatAdminStyle>
   )
